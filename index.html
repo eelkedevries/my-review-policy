@@ -1,0 +1,457 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>YES/NO Sticker Generator</title>
+  <style>
+    body { font-family: Arial, Helvetica, sans-serif; margin: 24px; color: #111; }
+    .wrap { max-width: 1040px; }
+    .row { display: flex; gap: 12px; flex-wrap: wrap; margin: 12px 0; align-items: end; }
+    .col { flex: 1 1 420px; }
+    label { display: block; font-size: 14px; margin-bottom: 6px; }
+    input[type="text"], select {
+      width: 100%; padding: 10px 12px; font-size: 16px;
+      border: 1px solid #ccc; border-radius: 8px; background: #fff;
+    }
+    input[type="checkbox"] { margin-right: 8px; transform: translateY(1px); }
+    button {
+      padding: 10px 14px; font-size: 16px; cursor: pointer;
+      border: 1px solid #ccc; border-radius: 8px; background: #fff;
+    }
+    button:active { transform: translateY(1px); }
+    canvas { width: 100%; border: 1px solid #ddd; border-radius: 12px; display: block; }
+    .note { font-size: 13px; color: #555; margin-top: 10px; line-height: 1.4; }
+    .small { font-size: 13px; color: #333; }
+    .pill {
+      display: inline-block; padding: 4px 10px; border-radius: 999px;
+      border: 1px solid #ddd; background: #fafafa; font-size: 12px; color: #444;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h2>YES/NO Sticker Generator</h2>
+
+    <div class="row">
+      <div class="col">
+        <label for="presetSelect">Presets</label>
+        <select id="presetSelect">
+          <option value="">Select a preset…</option>
+          <option value="diamond">Diamond OA vs paywalls/APCs</option>
+          <option value="nonprofit">Non-profit vs publisher profit</option>
+          <option value="paywalls">Open access science vs paywalls after free work</option>
+          <option value="spam">Constructive review vs automated invitations</option>
+        </select>
+      </div>
+
+      <div class="col">
+        <label for="sizeSelect">Output size</label>
+        <select id="sizeSelect">
+          <option value="1800x360">Wide (LinkedIn-friendly) 1800×360</option>
+          <option value="1600x320">Email header 1600×320</option>
+          <option value="1200x240">Compact 1200×240</option>
+          <option value="1200x1200">Square 1200×1200</option>
+        </select>
+      </div>
+
+      <div class="col" style="flex: 0 1 260px;">
+        <label class="small"><span class="pill">Export</span></label>
+        <div style="display:flex; gap:14px; align-items:center; padding: 8px 0;">
+          <label style="margin:0;">
+            <input id="hiRes" type="checkbox" checked />
+            High-res (2×)
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <label for="noText">NO text (left)</label>
+        <input id="noText" type="text" value="Peer review for paywalls and APCs" />
+      </div>
+      <div class="col">
+        <label for="yesText">YES text (right)</label>
+        <input id="yesText" type="text" value="Peer review for diamond open access" />
+      </div>
+    </div>
+
+    <div class="row">
+      <button id="downloadBtn">Download PNG</button>
+      <button id="copyBtn">Copy image</button>
+      <button id="copyLinkBtn">Copy link</button>
+      <button id="clearAllBtn">Clear all</button>
+    </div>
+
+    <!-- Live preview -->
+    <canvas id="c"></canvas>
+
+    <div class="note">
+      Labels YES/NO are fixed. Text updates in real time. “Copy image” requires a modern browser and HTTPS (GitHub Pages is fine).
+    </div>
+  </div>
+
+  <script>
+    // ---------- DOM ----------
+    const canvas = document.getElementById("c");
+    const ctx = canvas.getContext("2d");
+
+    const presetSelect = document.getElementById("presetSelect");
+    const sizeSelect = document.getElementById("sizeSelect");
+    const hiResCheckbox = document.getElementById("hiRes");
+
+    const noInput = document.getElementById("noText");
+    const yesInput = document.getElementById("yesText");
+
+    const downloadBtn = document.getElementById("downloadBtn");
+    const copyBtn = document.getElementById("copyBtn");
+    const copyLinkBtn = document.getElementById("copyLinkBtn");
+    const clearAllBtn = document.getElementById("clearAllBtn");
+
+    // ---------- Defaults ----------
+    const DEFAULTS = {
+      yes: "Peer review for diamond open access",
+      no: "Peer review for paywalls and APCs",
+      size: "1800x360",
+      hiRes: true
+    };
+
+    const PRESETS = {
+      diamond: {
+        yes: "Peer review for diamond open access",
+        no: "Peer review for paywalls and APCs"
+      },
+      nonprofit: {
+        yes: "Peer review for non-profit publishing",
+        no: "Peer review for publisher profit"
+      },
+      paywalls: {
+        yes: "Peer review for open access science",
+        no: "Peer review for paywalls after free work"
+      },
+      spam: {
+        yes: "Constructive peer review",
+        no: "Automated reviewer invitations"
+      }
+    };
+
+    // “Dutch sticker” inspired palette (black background, bright blocks)
+    const COLORS = {
+      bg: "#000000",
+      border: "#FFFFFF",
+      no: "#E53935",     // red
+      yes: "#00B050",    // green
+      text: "#FFFFFF"
+    };
+
+    // ---------- URL params (E) ----------
+    // Supported:
+    // ?yes=...&no=...&size=1800x360&hires=1
+    function getParams() {
+      const p = new URLSearchParams(window.location.search);
+      return {
+        yes: p.get("yes"),
+        no: p.get("no"),
+        size: p.get("size"),
+        hires: p.get("hires")
+      };
+    }
+
+    function applyParams() {
+      const p = getParams();
+      if (p.yes !== null) yesInput.value = p.yes;
+      if (p.no !== null) noInput.value = p.no;
+      if (p.size !== null) sizeSelect.value = p.size;
+      if (p.hires !== null) hiResCheckbox.checked = (p.hires === "1" || p.hires.toLowerCase() === "true");
+    }
+
+    function updateURL() {
+      const p = new URLSearchParams();
+      p.set("yes", yesInput.value);
+      p.set("no", noInput.value);
+      p.set("size", sizeSelect.value);
+      p.set("hires", hiResCheckbox.checked ? "1" : "0");
+      const newUrl = `${window.location.pathname}?${p.toString()}`;
+      window.history.replaceState({}, "", newUrl);
+    }
+
+    async function copyLink() {
+      try {
+        const fullUrl = window.location.href;
+        await navigator.clipboard.writeText(fullUrl);
+        alert("Link copied to clipboard.");
+      } catch (e) {
+        alert("Could not copy link. You can copy it manually from the address bar.");
+      }
+    }
+
+    // ---------- Canvas sizing ----------
+    function parseSize(str) {
+      const [w, h] = (str || "").split("x").map(n => parseInt(n, 10));
+      if (!Number.isFinite(w) || !Number.isFinite(h)) return { w: 1800, h: 360 };
+      return { w, h };
+    }
+
+    function setCanvasSizeForPreview() {
+      // Preview should always match the selected size (1×),
+      // independent of hi-res export.
+      const { w, h } = parseSize(sizeSelect.value);
+      canvas.width = w;
+      canvas.height = h;
+    }
+
+    // ---------- Text fitting (2) ----------
+    function wrapText(text, maxWidth, fontSize, maxLines) {
+      ctx.font = `bold ${fontSize}px Arial`;
+      const words = (text || "").trim().split(/\s+/).filter(Boolean);
+      const lines = [];
+      let line = "";
+
+      for (const w of words) {
+        const test = line ? `${line} ${w}` : w;
+        if (ctx.measureText(test).width <= maxWidth) {
+          line = test;
+        } else {
+          if (line) lines.push(line);
+          line = w;
+        }
+      }
+      if (line) lines.push(line);
+
+      return lines.slice(0, maxLines);
+    }
+
+    function fitText(text, maxWidth, maxLines, startSize, minSize) {
+      let size = startSize;
+      while (size >= minSize) {
+        const lines = wrapText(text, maxWidth, size, maxLines);
+        // If text had to be cut to maxLines, it still "fits" visually.
+        // The important part is: each line fits the width constraint.
+        let ok = true;
+        ctx.font = `bold ${size}px Arial`;
+        for (const line of lines) {
+          if (ctx.measureText(line).width > maxWidth) { ok = false; break; }
+        }
+        if (ok) return { size, lines };
+        size -= 2;
+      }
+      return { size: minSize, lines: wrapText(text, maxWidth, minSize, maxLines) };
+    }
+
+    // ---------- Drawing (Dutch JA/NEE sticker style, but YES/NO) ----------
+    function drawSticker(targetCtx, W, H) {
+      const border = Math.max(10, Math.round(W * 0.006)); // scale with size
+      const pad = Math.round(W * 0.015);
+      const sepW = Math.max(8, Math.round(W * 0.005));
+
+      const labelBlockW = Math.round(W * 0.14); // fixed proportion
+      const innerH = H - 2 * border;
+
+      const totalInnerW = W - 2 * border;
+      const textAreaW = (totalInnerW - 2 * labelBlockW - sepW) / 2;
+
+      const xNoBlock = border;
+      const xNoText = border + labelBlockW;
+      const xSep = xNoText + textAreaW;
+      const xYesText = xSep + sepW;
+      const xYesBlock = xYesText + textAreaW;
+
+      // Background
+      targetCtx.clearRect(0, 0, W, H);
+      targetCtx.fillStyle = COLORS.bg;
+      targetCtx.fillRect(0, 0, W, H);
+
+      // Outer border
+      targetCtx.strokeStyle = COLORS.border;
+      targetCtx.lineWidth = border;
+      targetCtx.strokeRect(border / 2, border / 2, W - border, H - border);
+
+      // Separator line
+      targetCtx.fillStyle = COLORS.border;
+      targetCtx.fillRect(xSep, border, sepW, innerH);
+
+      // Blocks
+      targetCtx.fillStyle = COLORS.no;
+      targetCtx.fillRect(xNoBlock, border, labelBlockW, innerH);
+
+      targetCtx.fillStyle = COLORS.yes;
+      targetCtx.fillRect(xYesBlock, border, labelBlockW, innerH);
+
+      // Big fixed labels
+      targetCtx.fillStyle = COLORS.text;
+      targetCtx.textAlign = "center";
+      targetCtx.textBaseline = "middle";
+
+      const bigSize = Math.round(H * 0.42);
+      targetCtx.font = `bold ${bigSize}px Arial`;
+      targetCtx.fillText("NO", xNoBlock + labelBlockW / 2, H / 2);
+      targetCtx.fillText("YES", xYesBlock + labelBlockW / 2, H / 2);
+
+      // Text areas
+      targetCtx.fillStyle = COLORS.text;
+      targetCtx.textAlign = "left";
+      targetCtx.textBaseline = "top";
+
+      // Fit text sizes relative to H
+      const startSize = Math.round(H * 0.18);
+      const minSize = Math.max(18, Math.round(H * 0.10));
+      const maxLines = 3;
+      const maxW = textAreaW - 2 * pad;
+
+      // Use the canvas-global ctx measurement methods by temporarily mapping ctx
+      // We will set ctx to targetCtx for measurement by assigning globally.
+      // Safer: just use targetCtx for measurements in helper functions.
+      // For simplicity, we re-implement quick fit using targetCtx:
+      function fitTextLocal(text) {
+        let size = startSize;
+        while (size >= minSize) {
+          targetCtx.font = `bold ${size}px Arial`;
+          const words = (text || "").trim().split(/\s+/).filter(Boolean);
+          const lines = [];
+          let line = "";
+          for (const w of words) {
+            const test = line ? `${line} ${w}` : w;
+            if (targetCtx.measureText(test).width <= maxW) line = test;
+            else { if (line) lines.push(line); line = w; }
+          }
+          if (line) lines.push(line);
+          const clipped = lines.slice(0, maxLines);
+          // verify each line fits
+          let ok = true;
+          for (const ln of clipped) {
+            if (targetCtx.measureText(ln).width > maxW) { ok = false; break; }
+          }
+          if (ok) return { size, lines: clipped };
+          size -= 2;
+        }
+        // fallback
+        targetCtx.font = `bold ${minSize}px Arial`;
+        return { size: minSize, lines: wrapText(text, maxW, minSize, maxLines) };
+      }
+
+      const noFit = fitTextLocal(noInput.value);
+      targetCtx.font = `bold ${noFit.size}px Arial`;
+      let y = border + Math.round(H * 0.18);
+      for (const line of noFit.lines) {
+        targetCtx.fillText(line, xNoText + pad, y);
+        y += noFit.size + Math.round(H * 0.04);
+      }
+
+      const yesFit = fitTextLocal(yesInput.value);
+      targetCtx.font = `bold ${yesFit.size}px Arial`;
+      y = border + Math.round(H * 0.18);
+      for (const line of yesFit.lines) {
+        targetCtx.fillText(line, xYesText + pad, y);
+        y += yesFit.size + Math.round(H * 0.04);
+      }
+    }
+
+    function renderPreview() {
+      setCanvasSizeForPreview();
+      drawSticker(ctx, canvas.width, canvas.height);
+    }
+
+    // ---------- Export (F) ----------
+    function makeExportCanvas() {
+      const { w, h } = parseSize(sizeSelect.value);
+      const scale = hiResCheckbox.checked ? 2 : 1;
+
+      const exportCanvas = document.createElement("canvas");
+      exportCanvas.width = w * scale;
+      exportCanvas.height = h * scale;
+
+      const exportCtx = exportCanvas.getContext("2d");
+      // scale up drawing for crisp text
+      exportCtx.scale(scale, scale);
+      drawSticker(exportCtx, w, h);
+      return exportCanvas;
+    }
+
+    function downloadPNG() {
+      const out = makeExportCanvas();
+      const a = document.createElement("a");
+      a.download = "yes-no-sticker.png";
+      a.href = out.toDataURL("image/png");
+      a.click();
+    }
+
+    async function copyImage() {
+      try {
+        if (!navigator.clipboard || !window.ClipboardItem) {
+          alert("Clipboard image copy is not supported in this browser.");
+          return;
+        }
+        const out = makeExportCanvas();
+        const blob = await new Promise((resolve) => out.toBlob(resolve, "image/png"));
+        if (!blob) {
+          alert("Could not create image blob.");
+          return;
+        }
+        await navigator.clipboard.write([new ClipboardItem({ "image/png": blob })]);
+        alert("Image copied to clipboard.");
+      } catch (e) {
+        console.error(e);
+        alert("Copy failed. Some browsers require HTTPS and a user click.");
+      }
+    }
+
+    // ---------- Presets (A) ----------
+    function applyPreset(key) {
+      if (!key || !PRESETS[key]) return;
+      yesInput.value = PRESETS[key].yes;
+      noInput.value = PRESETS[key].no;
+    }
+
+    // ---------- Clear all / reset ----------
+    function clearAll() {
+      presetSelect.value = "";
+      sizeSelect.value = DEFAULTS.size;
+      hiResCheckbox.checked = DEFAULTS.hiRes;
+      yesInput.value = DEFAULTS.yes;
+      noInput.value = DEFAULTS.no;
+      updateURL();
+      renderPreview();
+    }
+
+    // ---------- Live updates ----------
+    function onAnyChange() {
+      updateURL();
+      renderPreview();
+    }
+
+    // ---------- Init ----------
+    // Set initial UI defaults
+    sizeSelect.value = DEFAULTS.size;
+    hiResCheckbox.checked = DEFAULTS.hiRes;
+
+    // Apply URL params if present (E)
+    applyParams();
+
+    // Ensure preview matches current state
+    updateURL();
+    renderPreview();
+
+    // ---------- Event wiring ----------
+    yesInput.addEventListener("input", onAnyChange);
+    noInput.addEventListener("input", onAnyChange);
+
+    sizeSelect.addEventListener("change", onAnyChange);
+    hiResCheckbox.addEventListener("change", onAnyChange);
+
+    presetSelect.addEventListener("change", () => {
+      applyPreset(presetSelect.value);
+      onAnyChange();
+    });
+
+    downloadBtn.addEventListener("click", downloadPNG);
+    copyBtn.addEventListener("click", copyImage);
+    copyLinkBtn.addEventListener("click", copyLink);
+    clearAllBtn.addEventListener("click", clearAll);
+
+    // Redraw on window resize is not needed because canvas uses fixed pixel size,
+    // but it doesn't hurt to keep preview fresh when layout changes.
+    window.addEventListener("resize", () => renderPreview());
+  </script>
+</body>
+</html>
