@@ -3,102 +3,94 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>YES/NO Sticker Generator</title>
+  <title>My review policy</title>
   <style>
     body { font-family: Arial, Helvetica, sans-serif; margin: 24px; color: #111; }
     .wrap { max-width: 1040px; }
 
-    .intro {
+    h1 { font-size: 28px; margin: 0 0 10px 0; }
+    .subtext {
       margin: 0 0 14px 0;
       line-height: 1.45;
-      font-size: 15px;
+      font-size: 14px;
       color: #222;
+      max-width: 980px;
     }
-    .intro a { color: #0b65c2; text-decoration: none; }
-    .intro a:hover { text-decoration: underline; }
 
-    h2 { margin-bottom: 10px; }
+    .iconbar { display: inline-flex; gap: 10px; vertical-align: middle; margin-left: 6px; }
+    .iconlink { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; }
+    .iconlink svg { width: 20px; height: 20px; display: block; }
 
     .row { display: flex; gap: 12px; flex-wrap: wrap; margin: 12px 0; align-items: end; }
     .col { flex: 1 1 420px; }
 
-    .section-title {
-      margin-top: 14px;
-      font-size: 15px;
-      font-weight: 700;
-      color: #111;
-    }
-    .section-subtitle {
-      margin-top: 2px;
-      font-size: 14px;
-      color: #333;
-    }
-
+    .section-title { margin-top: 14px; font-size: 15px; font-weight: 700; color: #111; }
     label { display: block; font-size: 14px; margin-bottom: 6px; }
+
     input[type="text"]{
       width: 100%; padding: 10px 12px; font-size: 16px;
       border: 1px solid #ccc; border-radius: 8px; background: #fff;
     }
 
-    .radio-group {
-      margin-top: 8px;
-      display: grid;
-      gap: 8px;
-    }
+    .radio-group { margin-top: 8px; display: grid; gap: 8px; }
     .radio-item {
-      display: flex;
-      gap: 10px;
-      align-items: flex-start;
-      padding: 10px 12px;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      background: #fff;
+      display: flex; gap: 10px; align-items: flex-start;
+      padding: 10px 12px; border: 1px solid #ddd; border-radius: 10px; background: #fff;
     }
-    .radio-item input[type="radio"] {
-      margin-top: 3px;
-      transform: scale(1.05);
-    }
-    .radio-label {
-      display: grid;
-      gap: 2px;
-    }
-    .radio-name {
-      font-weight: 700;
-      font-size: 14px;
-      color: #111;
-    }
-    .radio-pair {
-      font-size: 13px;
-      color: #333;
-      line-height: 1.35;
-    }
+    .radio-item input[type="radio"] { margin-top: 3px; transform: scale(1.05); }
+    .radio-label { display: grid; gap: 2px; }
+    .radio-name { font-weight: 700; font-size: 14px; color: #111; }
+    .radio-pair { font-size: 13px; color: #333; line-height: 1.35; }
 
+    .tiny { font-size: 13px; color: #333; }
+
+    .controls { display: flex; gap: 10px; flex-wrap: wrap; margin: 12px 0; }
     button {
       padding: 10px 14px; font-size: 16px; cursor: pointer;
       border: 1px solid #ccc; border-radius: 8px; background: #fff;
     }
     button:active { transform: translateY(1px); }
 
+    .headeropts {
+      display: flex; gap: 10px; flex-wrap: wrap; align-items: center;
+      margin: 10px 0 6px 0;
+    }
+    .headeropts label { margin: 0; font-size: 14px; }
+    .headeropts input[type="checkbox"] { margin-right: 8px; transform: translateY(1px); }
+
     canvas { width: 100%; border: 1px solid #ddd; border-radius: 12px; display: block; }
   </style>
 </head>
+
 <body>
   <div class="wrap">
-    <h2>YES/NO Sticker Generator</h2>
+    <h1>My review policy</h1>
 
-    <p class="intro">
-      This YES/NO image generator helps researchers respond quickly and clearly to unwanted review requests, including automated mass invitations, predatory journals, and high-fee for-profit publishers that rely on unpaid reviewing and often place accepted papers behind paywalls.
-      <br><br>
-      Made by Eelke de Vries:
-      <a href="https://www.linkedin.com/in/eelkedevries" target="_blank" rel="noopener noreferrer">https://www.linkedin.com/in/eelkedevries</a>,
-      <a href="https://github.com/eelkedevries" target="_blank" rel="noopener noreferrer">https://github.com/eelkedevries</a>.
+    <p class="subtext">
+      This YES/NO image generator helps researchers share their personal review policy in any way they want (for example, a social media post or a quick reply to unwanted review requests), including automated mass invitations, predatory journals, and high-fee for-profit publishers that rely on unpaid reviewing and often place accepted papers behind paywalls.
+      <strong>#MyReviewPolicy</strong>
+      &nbsp;Read more here: <a href="#" id="readMoreLink">[link coming soon]</a>
+      <span class="iconbar" aria-label="Links">
+        <a class="iconlink" href="https://www.linkedin.com/in/eelkedevries" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+          <!-- LinkedIn icon -->
+          <svg viewBox="0 0 24 24" role="img" aria-hidden="true">
+            <path fill="#0A66C2" d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.036-1.852-3.036-1.853 0-2.136 1.445-2.136 2.939v5.666H9.35V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.368-1.85 3.6 0 4.269 2.368 4.269 5.455v6.286zM5.337 7.433a2.062 2.062 0 1 1 0-4.124 2.062 2.062 0 0 1 0 4.124zM6.815 20.452H3.858V9h2.957v11.452z"/>
+          </svg>
+        </a>
+        <a class="iconlink" href="https://github.com/eelkedevries/" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+          <!-- GitHub icon -->
+          <svg viewBox="0 0 24 24" role="img" aria-hidden="true">
+            <path fill="#111" d="M12 .5C5.73.5.75 5.62.75 12.05c0 5.14 3.19 9.5 7.62 11.04.56.11.77-.25.77-.56 0-.27-.01-1.17-.02-2.12-3.1.69-3.75-1.25-3.75-1.25-.5-1.33-1.23-1.68-1.23-1.68-1-.71.08-.7.08-.7 1.11.08 1.7 1.18 1.7 1.18.98 1.74 2.57 1.24 3.2.95.1-.73.38-1.24.69-1.52-2.48-.29-5.08-1.28-5.08-5.69 0-1.26.44-2.29 1.17-3.1-.12-.3-.51-1.52.11-3.16 0 0 .95-.31 3.12 1.18a10.7 10.7 0 0 1 2.84-.39c.96 0 1.93.13 2.84.39 2.17-1.49 3.12-1.18 3.12-1.18.62 1.64.23 2.86.11 3.16.73.81 1.17 1.84 1.17 3.1 0 4.42-2.61 5.39-5.1 5.68.39.35.74 1.04.74 2.11 0 1.52-.02 2.74-.02 3.11 0 .31.2.68.78.56 4.42-1.54 7.61-5.9 7.61-11.04C23.25 5.62 18.27.5 12 .5z"/>
+          </svg>
+        </a>
+      </span>
     </p>
 
     <div class="section-title">Select the kind of review invitation you received.</div>
 
     <div class="radio-group" role="radiogroup" aria-label="Select the kind of review invitation you received">
       <div class="radio-item">
-        <input type="radio" id="preset_forprofit" name="preset" value="forprofit" />
+        <input type="radio" id="preset1" name="preset" value="p1" />
         <div class="radio-label">
           <div class="radio-name">For-profit publishers</div>
           <div class="radio-pair">
@@ -109,18 +101,29 @@
       </div>
 
       <div class="radio-item">
-        <input type="radio" id="preset_predatory" name="preset" value="predatory" />
+        <input type="radio" id="preset2" name="preset" value="p2" />
         <div class="radio-label">
-          <div class="radio-name">Predatory publishers</div>
+          <div class="radio-name">For-profit publishers</div>
           <div class="radio-pair">
-            <strong>NO:</strong> Predatory publishing practices<br>
-            <strong>YES:</strong> Legitimate academic journals
+            <strong>NO:</strong> Peer review for publisher profit<br>
+            <strong>YES:</strong> Peer review for non-profit publishing
           </div>
         </div>
       </div>
 
       <div class="radio-item">
-        <input type="radio" id="preset_automated" name="preset" value="automated" />
+        <input type="radio" id="preset3" name="preset" value="p3" />
+        <div class="radio-label">
+          <div class="radio-name">Predatory publishers</div>
+          <div class="radio-pair">
+            <strong>NO:</strong> Peer review for predatory publishers<br>
+            <strong>YES:</strong> Peer review for legitimate journals
+          </div>
+        </div>
+      </div>
+
+      <div class="radio-item">
+        <input type="radio" id="preset4" name="preset" value="p4" />
         <div class="radio-label">
           <div class="radio-name">Automated review invitations</div>
           <div class="radio-pair">
@@ -144,116 +147,191 @@
       </div>
     </div>
 
-    <div class="row">
+    <div class="headeropts">
+      <label><input id="showHeader" type="checkbox" checked />Add heading above image</label>
+      <div style="flex: 1 1 420px; min-width: 260px;">
+        <label for="headerText" class="tiny" style="margin-bottom:6px;">Heading text</label>
+        <input id="headerText" type="text" value="MY REVIEW POLICY" />
+      </div>
+    </div>
+
+    <div class="controls">
       <button id="downloadBtn">Download PNG</button>
       <button id="copyBtn">Copy image</button>
       <button id="copyLinkBtn">Copy link</button>
-      <button id="clearAllBtn">Clear all</button>
     </div>
 
-    <canvas id="c" width="1800" height="360"></canvas>
+    <canvas id="c"></canvas>
   </div>
 
   <script>
-    // ---------- DOM ----------
-    const canvas = document.getElementById("c");
-    const ctx = canvas.getContext("2d");
+    // -----------------------
+    // Configuration
+    // -----------------------
+    const STICKER_W = 1800;
+    const STICKER_H = 360;
 
-    const noInput = document.getElementById("noText");
-    const yesInput = document.getElementById("yesText");
-
-    const presetRadios = Array.from(document.querySelectorAll('input[name="preset"]'));
-
-    const downloadBtn = document.getElementById("downloadBtn");
-    const copyBtn = document.getElementById("copyBtn");
-    const copyLinkBtn = document.getElementById("copyLinkBtn");
-    const clearAllBtn = document.getElementById("clearAllBtn");
-
-    // Fixed output size
-    const FIXED_W = 1800;
-    const FIXED_H = 360;
-
-    // ---------- Defaults ----------
-    const DEFAULTS = {
-      yes: "Peer review for diamond open access",
-      no: "Peer review for paywalls and APCs"
-    };
-
-    const PRESETS = {
-      forprofit: {
-        no: "Peer review for paywalls and APCs",
-        yes: "Peer review for diamond open access"
-      },
-      predatory: {
-        no: "Predatory publishing practices",
-        yes: "Legitimate academic journals"
-      },
-      automated: {
-        no: "Automated review invitations",
-        yes: "Legitimate editorial requests"
-      }
-    };
+    // Header band height (only when enabled)
+    const HEADER_H = 90;
 
     const COLORS = {
       bg: "#000000",
       border: "#FFFFFF",
       no: "#E53935",
       yes: "#00B050",
-      text: "#FFFFFF"
+      text: "#FFFFFF",
+      headerBg: "#FFFFFF",
+      headerText: "#000000"
     };
 
-    // ---------- URL params (yes/no only) ----------
-    // Supported:
-    // ?yes=...&no=...
+    const PRESETS = {
+      p1: { no: "Peer review for paywalls and APCs", yes: "Peer review for diamond open access" },
+      p2: { no: "Peer review for publisher profit", yes: "Peer review for non-profit publishing" },
+      p3: { no: "Peer review for predatory publishers", yes: "Peer review for legitimate journals" },
+      p4: { no: "Automated review invitations", yes: "Legitimate editorial requests" }
+    };
+
+    const DEFAULTS = { ...PRESETS.p1 };
+
+    // -----------------------
+    // DOM
+    // -----------------------
+    const canvas = document.getElementById("c");
+    const ctx = canvas.getContext("2d");
+
+    const noInput = document.getElementById("noText");
+    const yesInput = document.getElementById("yesText");
+    const presetRadios = Array.from(document.querySelectorAll('input[name="preset"]'));
+
+    const showHeader = document.getElementById("showHeader");
+    const headerTextInput = document.getElementById("headerText");
+
+    const downloadBtn = document.getElementById("downloadBtn");
+    const copyBtn = document.getElementById("copyBtn");
+    const copyLinkBtn = document.getElementById("copyLinkBtn");
+
+    // -----------------------
+    // URL params: yes/no/header/showHeader
+    // -----------------------
     function getParams() {
       const p = new URLSearchParams(window.location.search);
-      return { yes: p.get("yes"), no: p.get("no") };
+      return {
+        yes: p.get("yes"),
+        no: p.get("no"),
+        header: p.get("header"),
+        showHeader: p.get("showHeader")
+      };
     }
 
     function applyParams() {
       const p = getParams();
       if (p.yes !== null) yesInput.value = p.yes;
       if (p.no !== null) noInput.value = p.no;
+      if (p.header !== null) headerTextInput.value = p.header;
+      if (p.showHeader !== null) showHeader.checked = (p.showHeader === "1" || p.showHeader.toLowerCase() === "true");
     }
 
     function updateURL() {
       const p = new URLSearchParams();
       p.set("yes", yesInput.value);
       p.set("no", noInput.value);
+      p.set("header", headerTextInput.value);
+      p.set("showHeader", showHeader.checked ? "1" : "0");
       const newUrl = `${window.location.pathname}?${p.toString()}`;
       window.history.replaceState({}, "", newUrl);
     }
 
-    async function copyLink() {
+    // -----------------------
+    // Clipboard: robust copy link (Android Firefox fallback)
+    // -----------------------
+    async function copyLinkRobust() {
+      const url = window.location.href;
+
+      // Primary: modern clipboard API
       try {
-        await navigator.clipboard.writeText(window.location.href);
-        alert("Link copied to clipboard.");
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(url);
+          alert("Link copied to clipboard.");
+          return;
+        }
       } catch (e) {
-        alert("Could not copy link. You can copy it manually from the address bar.");
+        // fall through to fallback
+      }
+
+      // Fallback: execCommand
+      try {
+        const tmp = document.createElement("textarea");
+        tmp.value = url;
+        tmp.setAttribute("readonly", "");
+        tmp.style.position = "fixed";
+        tmp.style.left = "-9999px";
+        tmp.style.top = "0";
+        document.body.appendChild(tmp);
+        tmp.select();
+        tmp.setSelectionRange(0, tmp.value.length);
+        const ok = document.execCommand("copy");
+        document.body.removeChild(tmp);
+        if (ok) alert("Link copied to clipboard.");
+        else alert("Copy failed. Please copy from the address bar.");
+      } catch (e) {
+        alert("Copy failed. Please copy from the address bar.");
       }
     }
 
-    // ---------- Text helpers ----------
-    function wrapText(targetCtx, text, maxWidth, fontSize, maxLines) {
+    // -----------------------
+    // Text wrapping that preserves multiple spaces
+    // - spaces count as width and can trigger wrapping
+    // -----------------------
+    function tokenizePreserveSpaces(s) {
+      // Returns array of tokens: either whitespace runs or non-whitespace runs
+      // Example: "A  B" -> ["A", "  ", "B"]
+      return (s || "").match(/(\s+|\S+)/g) || [];
+    }
+
+    function wrapTextPreserveSpaces(targetCtx, text, maxWidth, fontSize, maxLines) {
       targetCtx.font = `bold ${fontSize}px Arial`;
-      const words = (text || "").trim().split(/\s+/).filter(Boolean);
+
+      const tokens = tokenizePreserveSpaces(text);
       const lines = [];
       let line = "";
 
-      for (const w of words) {
-        const test = line ? `${line} ${w}` : w;
-        if (targetCtx.measureText(test).width <= maxWidth) {
+      for (const t of tokens) {
+        const test = line + t; // keep spaces exactly as typed
+        if (targetCtx.measureText(test).width <= maxWidth || line.length === 0) {
           line = test;
         } else {
-          if (line) lines.push(line);
-          line = w;
+          lines.push(line);
+          line = t.replace(/^\s+/, ""); // avoid starting new line with many spaces
         }
+        if (lines.length >= maxLines) break;
       }
-      if (line) lines.push(line);
+
+      if (lines.length < maxLines && line !== "") lines.push(line);
+
+      // If still empty (e.g., input was only spaces), keep it as a single "spaces" line
+      if (lines.length === 0 && (text || "").length > 0) lines.push(text);
+
       return lines.slice(0, maxLines);
     }
 
-    // Fit a single shared font size for both "YES" and "NO" within the label blocks
+    function fitTextToBox(targetCtx, text, maxWidth, maxLines, startSize, minSize) {
+      let size = startSize;
+      while (size >= minSize) {
+        const lines = wrapTextPreserveSpaces(targetCtx, text, maxWidth, size, maxLines);
+
+        // Ensure each produced line fits; if not, reduce size
+        targetCtx.font = `bold ${size}px Arial`;
+        let ok = true;
+        for (const ln of lines) {
+          if (targetCtx.measureText(ln).width > maxWidth) { ok = false; break; }
+        }
+        if (ok) return { size, lines };
+        size -= 2;
+      }
+      return { size: minSize, lines: wrapTextPreserveSpaces(targetCtx, text, maxWidth, minSize, maxLines) };
+    }
+
+    // Fit a single shared font size for both "YES" and "NO" labels in their blocks
     function fitLabelFontSize(targetCtx, labelBlockW, innerH) {
       const maxW = labelBlockW * 0.86;
       const maxH = innerH * 0.80;
@@ -270,13 +348,15 @@
       return 20;
     }
 
-    // ---------- Drawing ----------
+    // -----------------------
+    // Drawing
+    // -----------------------
     function drawSticker(targetCtx, W, H) {
       const border = Math.max(10, Math.round(W * 0.006));
       const pad = Math.round(W * 0.015);
       const sepW = Math.max(10, Math.round(W * 0.006));
 
-      // Equal-sized red/green blocks
+      // Equal red/green blocks
       const labelBlockW = Math.round(W * 0.16);
       const innerH = H - 2 * border;
 
@@ -290,7 +370,6 @@
       const xYesBlock = xYesText + textAreaW;
 
       // Background
-      targetCtx.clearRect(0, 0, W, H);
       targetCtx.fillStyle = COLORS.bg;
       targetCtx.fillRect(0, 0, W, H);
 
@@ -299,18 +378,19 @@
       targetCtx.lineWidth = border;
       targetCtx.strokeRect(border / 2, border / 2, W - border, H - border);
 
-      // Separator line
+      // Separator
       targetCtx.fillStyle = COLORS.border;
       targetCtx.fillRect(xSep, border, sepW, innerH);
 
-      // Blocks (equal widths)
+      // NO block
       targetCtx.fillStyle = COLORS.no;
       targetCtx.fillRect(xNoBlock, border, labelBlockW, innerH);
 
+      // YES block
       targetCtx.fillStyle = COLORS.yes;
       targetCtx.fillRect(xYesBlock, border, labelBlockW, innerH);
 
-      // Big fixed labels
+      // Labels
       targetCtx.fillStyle = COLORS.text;
       targetCtx.textAlign = "center";
       targetCtx.textBaseline = "middle";
@@ -320,59 +400,85 @@
       targetCtx.fillText("NO", xNoBlock + labelBlockW / 2, H / 2);
       targetCtx.fillText("YES", xYesBlock + labelBlockW / 2, H / 2);
 
-      // Text areas
-      targetCtx.fillStyle = COLORS.text;
-      targetCtx.textAlign = "left";
-      targetCtx.textBaseline = "top";
-
+      // NO text area (left aligned)
       const startSize = Math.round(H * 0.18);
       const minSize = Math.max(18, Math.round(H * 0.10));
       const maxLines = 3;
       const maxW = textAreaW - 2 * pad;
 
-      function fitTextLocal(text) {
-        let size = startSize;
-        while (size >= minSize) {
-          targetCtx.font = `bold ${size}px Arial`;
-          const lines = wrapText(targetCtx, text, maxW, size, maxLines);
-
-          let ok = true;
-          for (const ln of lines) {
-            if (targetCtx.measureText(ln).width > maxW) { ok = false; break; }
-          }
-          if (ok) return { size, lines };
-          size -= 2;
-        }
-        return { size: minSize, lines: wrapText(targetCtx, text, maxW, minSize, maxLines) };
-      }
-
-      const noFit = fitTextLocal(noInput.value);
+      const noFit = fitTextToBox(targetCtx, noInput.value, maxW, maxLines, startSize, minSize);
       targetCtx.font = `bold ${noFit.size}px Arial`;
+      targetCtx.fillStyle = COLORS.text;
+      targetCtx.textAlign = "left";
+      targetCtx.textBaseline = "top";
+
       let y = border + Math.round(H * 0.18);
       for (const line of noFit.lines) {
         targetCtx.fillText(line, xNoText + pad, y);
         y += noFit.size + Math.round(H * 0.04);
       }
 
-      const yesFit = fitTextLocal(yesInput.value);
+      // YES text area (right aligned)
+      const yesFit = fitTextToBox(targetCtx, yesInput.value, maxW, maxLines, startSize, minSize);
       targetCtx.font = `bold ${yesFit.size}px Arial`;
+      targetCtx.fillStyle = COLORS.text;
+      targetCtx.textAlign = "right";
+      targetCtx.textBaseline = "top";
+
+      const yesX = xYesText + textAreaW - pad;
       y = border + Math.round(H * 0.18);
       for (const line of yesFit.lines) {
-        targetCtx.fillText(line, xYesText + pad, y);
+        targetCtx.fillText(line, yesX, y);
         y += yesFit.size + Math.round(H * 0.04);
       }
     }
 
-    function renderPreview() {
-      canvas.width = FIXED_W;
-      canvas.height = FIXED_H;
-      drawSticker(ctx, canvas.width, canvas.height);
+    function drawHeaderBand(targetCtx, W, headerH) {
+      targetCtx.fillStyle = COLORS.headerBg;
+      targetCtx.fillRect(0, 0, W, headerH);
+
+      const padY = Math.round(headerH * 0.18);
+      const maxW = Math.round(W * 0.92);
+
+      // Fit header text horizontally; single line
+      let size = Math.round(headerH * 0.55);
+      while (size > 18) {
+        targetCtx.font = `bold ${size}px Arial`;
+        if (targetCtx.measureText(headerTextInput.value).width <= maxW) break;
+        size -= 2;
+      }
+
+      targetCtx.fillStyle = COLORS.headerText;
+      targetCtx.textAlign = "center";
+      targetCtx.textBaseline = "middle";
+      targetCtx.font = `bold ${size}px Arial`;
+      targetCtx.fillText(headerTextInput.value, W / 2, headerH / 2 + padY * 0.05);
     }
 
-    // ---------- Export / clipboard ----------
+    function setCanvasSizeAndRender() {
+      const totalH = showHeader.checked ? (HEADER_H + STICKER_H) : STICKER_H;
+      canvas.width = STICKER_W;
+      canvas.height = totalH;
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      if (showHeader.checked) {
+        drawHeaderBand(ctx, STICKER_W, HEADER_H);
+        ctx.save();
+        ctx.translate(0, HEADER_H);
+        drawSticker(ctx, STICKER_W, STICKER_H);
+        ctx.restore();
+      } else {
+        drawSticker(ctx, STICKER_W, STICKER_H);
+      }
+    }
+
+    // -----------------------
+    // Export / Clipboard image
+    // -----------------------
     function downloadPNG() {
       const a = document.createElement("a");
-      a.download = "yes-no-sticker.png";
+      a.download = "my-review-policy.png";
       a.href = canvas.toDataURL("image/png");
       a.click();
     }
@@ -396,45 +502,37 @@
       }
     }
 
-    // ---------- Preset selection ----------
-    function clearPresetSelection() {
-      presetRadios.forEach(r => r.checked = false);
-    }
-
+    // -----------------------
+    // Presets
+    // -----------------------
     function applyPresetKey(key) {
-      if (!key || !PRESETS[key]) return;
-      noInput.value = PRESETS[key].no;
-      yesInput.value = PRESETS[key].yes;
+      const p = PRESETS[key];
+      if (!p) return;
+      noInput.value = p.no;
+      yesInput.value = p.yes;
     }
 
-    // ---------- Clear all ----------
-    function clearAll() {
-      clearPresetSelection();
-      yesInput.value = DEFAULTS.yes;
-      noInput.value = DEFAULTS.no;
-      updateURL();
-      renderPreview();
-    }
-
-    // ---------- Live updates ----------
+    // If user edits text manually, do not force-uncheck radio; user may want to start from preset
     function onAnyChange() {
       updateURL();
-      renderPreview();
+      setCanvasSizeAndRender();
     }
 
-    // ---------- Init ----------
+    // -----------------------
+    // Init
+    // -----------------------
     applyParams();
     updateURL();
-    renderPreview();
+    setCanvasSizeAndRender();
 
-    // ---------- Events ----------
-    yesInput.addEventListener("input", () => {
-      // if user types, treat as personal message; do not force-clear preset selection
-      onAnyChange();
-    });
-    noInput.addEventListener("input", () => {
-      onAnyChange();
-    });
+    // -----------------------
+    // Events
+    // -----------------------
+    noInput.addEventListener("input", onAnyChange);
+    yesInput.addEventListener("input", onAnyChange);
+
+    showHeader.addEventListener("change", onAnyChange);
+    headerTextInput.addEventListener("input", onAnyChange);
 
     presetRadios.forEach(radio => {
       radio.addEventListener("change", () => {
@@ -445,10 +543,9 @@
 
     downloadBtn.addEventListener("click", downloadPNG);
     copyBtn.addEventListener("click", copyImage);
-    copyLinkBtn.addEventListener("click", copyLink);
-    clearAllBtn.addEventListener("click", clearAll);
+    copyLinkBtn.addEventListener("click", copyLinkRobust);
 
-    window.addEventListener("resize", () => renderPreview());
+    window.addEventListener("resize", () => setCanvasSizeAndRender());
   </script>
 </body>
 </html>
