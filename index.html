@@ -148,7 +148,6 @@
 
     canvas { width: 100%; border: 1px solid #ddd; border-radius: 12px; display: block; background: #fff; }
 
-    .muted { font-size: 13px; color: #444; margin-top: 6px; }
     .inline-grow { flex: 1 1 520px; min-width: 260px; }
   </style>
 </head>
@@ -264,7 +263,6 @@
       </div>
     </div>
 
-    <!-- NEW: Adjust text sizes section (3 adjusters on one line) -->
     <h2>Adjust text sizes</h2>
 
     <div class="panel">
@@ -333,8 +331,7 @@
 
     const COLORS = {
       bg: "#000000",
-      outline: "#000000",      // NEW: black outline around sticker only
-      sep: "#FFFFFF",          // keep white separator
+      sep: "#FFFFFF",
       no: "#E53935",
       yes: "#00B050",
       text: "#FFFFFF",
@@ -358,7 +355,7 @@
       policyFontSize: 64,
       showHeader: true,
       headerText: "MY REVIEW POLICY",
-      headerFontSize: 45, // policy * 0.7
+      headerFontSize: 45,
       showFooter: false,
       footerText: "",
       footerFontSize: 40
@@ -579,16 +576,16 @@
     }
 
     function drawSticker(ctx, W, H, policyFontSize) {
-      const sepW = Math.max(10, Math.round(W * 0.006));   // white separator thickness
-      const outlineW = sepW;                               // NEW: outline thickness equals separator
+      // Center separator: 25% less thick
+      const sepBase = Math.max(10, Math.round(W * 0.006));
+      const sepW = Math.max(6, Math.round(sepBase * 0.75)); // -25%
+
+      // No outer outline/border now
+      const border = 0;
+
       const pad = Math.round(W * 0.015);
-
-      // Border/outline ONLY around sticker area (not around header/footer)
-      const border = outlineW;
-
       const labelBlockW = Math.round(W * 0.16);
       const innerH = H - 2 * border;
-
       const totalInnerW = W - 2 * border;
       const textAreaW = (totalInnerW - 2 * labelBlockW - sepW) / 2;
 
@@ -602,14 +599,14 @@
       ctx.fillStyle = COLORS.bg;
       ctx.fillRect(0, 0, W, H);
 
-      // Black outline
-      ctx.strokeStyle = COLORS.outline;
-      ctx.lineWidth = border;
-      ctx.strokeRect(border / 2, border / 2, W - border, H - border);
+      // Separator (shorter height, not full)
+      const sepTopPad = Math.round(H * 0.06);
+      const sepBottomPad = Math.round(H * 0.06);
+      const sepY = border + sepTopPad;
+      const sepH = innerH - sepTopPad - sepBottomPad;
 
-      // Separator (white)
       ctx.fillStyle = COLORS.sep;
-      ctx.fillRect(xSep, border, sepW, innerH);
+      ctx.fillRect(xSep, sepY, sepW, sepH);
 
       // Blocks
       ctx.fillStyle = COLORS.no;
