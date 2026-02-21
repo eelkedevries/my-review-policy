@@ -5,8 +5,12 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>My review policy</title>
   <style>
-    body { font-family: Arial, Helvetica, sans-serif; margin: 24px; color: #111; }
+    body { font-family: Arial, Helvetica, sans-serif; margin: 24px; color: #111; background: #fff; }
     .wrap { max-width: 1080px; }
+
+.intro-panel { padding: 16px 16px 10px 16px; }
+.intro-heading { font-size: 28px; margin: 0 0 10px 0; }
+.section-heading { font-size: 20px; margin: 0 0 12px 0; }
 
     h1 { font-size: 28px; margin: 0 0 10px 0; }
     h2 { font-size: 20px; margin: 20px 0 10px 0; }
@@ -26,7 +30,7 @@
       border: 1px solid #ddd;
       border-radius: 12px;
       padding: 14px 14px 6px 14px;
-      background: #fff;
+      background: #f7f8fa;
       margin: 10px 0 16px 0;
     }
     .panel-title {
@@ -35,6 +39,24 @@
       margin: 0 0 10px 0;
       color: #111;
     }
+
+    .subsection {
+      margin-top: 18px;
+      padding-top: 14px;
+      border-top: 1px solid #e6e6e6;
+    }
+    .subsection:first-of-type {
+      margin-top: 0;
+      padding-top: 0;
+      border-top: none;
+    }
+    .subheading {
+      font-size: 18px;
+      font-weight: 700;
+      margin: 0 0 10px 0;
+      color: #111;
+    }
+
 
     .row { display: flex; gap: 12px; flex-wrap: wrap; margin: 12px 0; align-items: flex-start; }
     .col { flex: 1 1 420px; }
@@ -132,6 +154,23 @@
     }
     button.action:active { transform: translateY(1px); }
 
+    .option-row {
+      margin-top: 10px;
+    }
+    label.check {
+      display: inline-flex;
+      gap: 10px;
+      align-items: center;
+      font-size: 14px;
+      user-select: none;
+      cursor: pointer;
+    }
+    label.check input {
+      width: 16px;
+      height: 16px;
+    }
+
+
     .divider { height: 1px; background: #eee; margin: 14px 0; }
 
     .warning {
@@ -146,7 +185,8 @@
       line-height: 1.35;
     }
 
-    canvas { width: 100%; border: 1px solid #ddd; border-radius: 12px; display: block; background: #fff; }
+    canvas { width: 100%; border: 1px solid #ddd; border-radius: 0; display: block; background: transparent; }
+    canvas.rc-on { border-radius: 12px; }
 
     .inline-grow { flex: 1 1 520px; min-width: 260px; }
   </style>
@@ -154,9 +194,10 @@
 
 <body>
   <div class="wrap">
-    <h1>My review policy</h1>
+    <div class="panel intro-panel">
+      <h1 class="intro-heading">My review policy</h1>
 
-    <p class="subtext">
+      <p class="subtext">
       This YES/NO image generator helps researchers share their personal review policy in any way they want (for example, a social media post or a quick reply to unwanted review requests), including automated mass invitations, predatory journals, and high-fee for-profit publishers that rely on unpaid reviewing and often place accepted papers behind paywalls.
       <strong>#MyReviewPolicy</strong>
       &nbsp;Read more here: <a href="#" id="readMoreLink">[link coming soon]</a>
@@ -172,89 +213,61 @@
           </svg>
         </a>
       </span>
-    </p>
+      </p>
 
-    <h2>What is your personal review policy</h2>
+    </div>
 
-    <div class="panel">
-      <div class="panel-title">Select default review policy</div>
-
-      <div class="radio-group" role="radiogroup" aria-label="Select default review policy">
-        <div class="radio-item">
-          <input type="radio" id="preset1" name="preset" value="p1" />
-          <div class="radio-label">
-            <div class="radio-name">For-profit publishers</div>
-            <div class="radio-pair">
-              <strong>NO:</strong> Peer review for paywalls and APCs<br>
-              <strong>YES:</strong> Peer review for diamond open access
-            </div>
-          </div>
-        </div>
-
-        <div class="radio-item">
-          <input type="radio" id="preset2" name="preset" value="p2" />
-          <div class="radio-label">
-            <div class="radio-name">For-profit publishers</div>
-            <div class="radio-pair">
-              <strong>NO:</strong> Peer review for publisher profit<br>
-              <strong>YES:</strong> Peer review for non-profit publishing
-            </div>
-          </div>
-        </div>
-
-        <div class="radio-item">
-          <input type="radio" id="preset3" name="preset" value="p3" />
-          <div class="radio-label">
-            <div class="radio-name">Predatory publishers</div>
-            <div class="radio-pair">
-              <strong>NO:</strong> Peer review for predatory publishers<br>
-              <strong>YES:</strong> Peer review for legitimate journals
-            </div>
-          </div>
-        </div>
-
-        <div class="radio-item">
-          <input type="radio" id="preset4" name="preset" value="p4" />
-          <div class="radio-label">
-            <div class="radio-name">Automated review invitations</div>
-            <div class="radio-pair">
-              <strong>NO:</strong> Automated review invitations<br>
-              <strong>YES:</strong> Legitimate editorial requests
-            </div>
-          </div>
-        </div>
+<div class="panel" id="imagePanel">
+      <h2 class="section-heading">Current image</h2>
+      <div id="overflowWarning" class="warning" role="status" aria-live="polite">
+        Some text does not fit in the image at the current font sizes. Reduce the relevant font size, shorten the text, or disable header/footer.
       </div>
 
-      <div class="divider"></div>
+      <div style="margin-top:12px;">
+        <canvas id="c"></canvas>
+      </div>
 
-      <div class="panel-title">Enter your personal review policy</div>
+      <div class="actions">
+        <button class="action" id="downloadBtn">Download PNG</button>
+        <button class="action" id="copyBtn">Copy image</button>
+        <button class="action" id="copyLinkBtn">Copy link</button>
+        <button class="action" id="clearBtn">Clear</button>
+      </div>
 
-      <div class="row">
+      <div class="option-row">
+        <label class="check"><input type="checkbox" id="roundedCorners"> Rounded corners</label>
+      </div>
+    </div>
+
+<div class="panel" id="adjustPanel">
+      <h2 class="section-heading">Personalize message</h2>
+
+<div class="row">
         <div class="col">
-          <label for="noText">NO text (left)</label>
-          <textarea id="noText">Peer review for paywalls and APCs</textarea>
+          <label for="noText">custom NO text</label>
+          <textarea id="noText">Publishing fees + paywalls</textarea>
         </div>
         <div class="col">
-          <label for="yesText">YES text (right)</label>
-          <textarea id="yesText">Peer review for diamond open access</textarea>
+          <label for="yesText">custom YES text</label>
+          <textarea id="yesText">Diamond open access</textarea>
         </div>
       </div>
     </div>
 
-    <h2>Header and footer (optional)</h2>
+    
 
-    <div class="panel">
-      <div class="panel-title">Header</div>
-      <div class="option-row">
+
+      <div class="divider"></div>
+<div class="subsection">
+<div class="option-row">
         <input id="showHeader" type="checkbox" checked />
-        <label for="showHeader" style="margin:0; font-weight:700;">Add heading text above image</label>
+        <label for="showHeader" style="margin:0; font-weight:700;">Add heading text on image</label>
         <div class="inline-grow">
-          <input id="headerText" type="text" value="MY REVIEW POLICY" />
+          <input id="headerText" type="text" value="MY PEER REVIEW POLICY" />
         </div>
       </div>
 
-      <div class="panel-title" style="margin-top:14px;">Footer</div>
-      <div class="option-row">
+            <div class="option-row">
         <input id="showFooter" type="checkbox" />
         <label for="showFooter" style="margin:0; font-weight:700;">Add footer text below image</label>
         <div class="inline-grow">
@@ -263,11 +276,11 @@
       </div>
     </div>
 
-    <h2>Adjust text sizes</h2>
+    
 
-    <div class="panel">
-      <div class="panel-title">Adjust text sizes</div>
-      <div class="adjusters-row" aria-label="Adjust text sizes">
+<div class="subsection">
+      <h3 class="subheading">Adjust text sizes</h3>
+            <div class="adjusters-row" aria-label="Adjust text sizes">
         <div class="font-control" aria-label="Policy text size control">
           <div class="label">Policy text</div>
           <input id="baseFontSize" class="font-size-box" type="text" inputmode="numeric" value="64" aria-label="Policy text size" />
@@ -279,7 +292,7 @@
 
         <div class="font-control" aria-label="Header font size control">
           <div class="label">Header</div>
-          <input id="headerFontSize" class="font-size-box" type="text" inputmode="numeric" value="45" aria-label="Header text size" />
+          <input id="headerFontSize" class="font-size-box" type="text" inputmode="numeric" value="40" aria-label="Header text size" />
           <div class="stepper" aria-label="Increase or decrease header font size">
             <button id="headerPlus" type="button" aria-label="Increase header font size">+</button>
             <button id="headerMinus" type="button" aria-label="Decrease header font size">−</button>
@@ -296,26 +309,6 @@
         </div>
       </div>
     </div>
-
-    <h2>Output</h2>
-
-    <div class="panel">
-      <div class="panel-title">Your image</div>
-
-      <div id="overflowWarning" class="warning" role="status" aria-live="polite">
-        Some text does not fit in the image at the current font sizes. Reduce the relevant font size, shorten the text, or disable header/footer.
-      </div>
-
-      <div class="actions">
-        <button class="action" id="downloadBtn">Download PNG</button>
-        <button class="action" id="copyBtn">Copy image</button>
-        <button class="action" id="copyLinkBtn">Copy link</button>
-        <button class="action" id="clearBtn">Clear</button>
-      </div>
-
-      <div style="margin-top:12px;">
-        <canvas id="c"></canvas>
-      </div>
     </div>
   </div>
 
@@ -326,15 +319,19 @@
     const STICKER_W = 1800;
     const STICKER_H = 360;
 
+
+    // Public "read more" link (update to your project page)
+    const READ_MORE_URL = "https://github.com/eelkedevries/my-review-policy";
     const HEADER_H = 90;
     const FOOTER_H = 70;
 
     const COLORS = {
       bg: "#000000",
-      sep: "#FFFFFF",
+      sep: "#E6E6E6",
       no: "#E53935",
-      yes: "#00B050",
+      yes: "#008A3B",
       text: "#FFFFFF",
+      titleText: "#CFCFCF",
       headerBg: "#FFFFFF",
       headerText: "#000000",
       footerBg: "#FFFFFF",
@@ -342,10 +339,7 @@
     };
 
     const PRESETS = {
-      p1: { no: "Peer review for paywalls and APCs", yes: "Peer review for diamond open access" },
-      p2: { no: "Peer review for publisher profit", yes: "Peer review for non-profit publishing" },
-      p3: { no: "Peer review for predatory publishers", yes: "Peer review for legitimate journals" },
-      p4: { no: "Automated review invitations", yes: "Legitimate editorial requests" }
+      p1: { no: "Publishing fees + paywalls", yes: "Diamond open access" }
     };
 
     const DEFAULT_STATE = {
@@ -354,11 +348,12 @@
       yesText: PRESETS.p1.yes,
       policyFontSize: 64,
       showHeader: true,
-      headerText: "MY REVIEW POLICY",
-      headerFontSize: 45,
+      headerText: "MY PEER REVIEW POLICY",
+      headerFontSize: 50,
       showFooter: false,
       footerText: "",
-      footerFontSize: 40
+      footerFontSize: 40,
+      roundedCorners: true
     };
 
     // -----------------------
@@ -367,6 +362,8 @@
     const canvas = document.getElementById("c");
     const ctx = canvas.getContext("2d");
 
+
+    const readMoreLink = document.getElementById("readMoreLink");
     const noInput = document.getElementById("noText");
     const yesInput = document.getElementById("yesText");
     const presetRadios = Array.from(document.querySelectorAll('input[name="preset"]'));
@@ -376,6 +373,8 @@
 
     const showFooter = document.getElementById("showFooter");
     const footerTextInput = document.getElementById("footerText");
+
+    const roundedCorners = document.getElementById("roundedCorners");
 
     const baseFontSizeInput = document.getElementById("baseFontSize");
     const headerFontSizeInput = document.getElementById("headerFontSize");
@@ -404,7 +403,23 @@
       return Number.isFinite(n) ? n : fallback;
     }
 
-    function getPolicyFontSize() { return clamp(parseIntOr(DEFAULT_STATE.policyFontSize, baseFontSizeInput.value), 10, 140); }
+    
+    
+    function pathRoundRect(ctx, x, y, w, h, r) {
+      const radius = Math.max(0, Math.min(r, Math.min(w, h) / 2));
+      ctx.beginPath();
+      ctx.moveTo(x + radius, y);
+      ctx.arcTo(x + w, y, x + w, y + h, radius);
+      ctx.arcTo(x + w, y + h, x, y + h, radius);
+      ctx.arcTo(x, y + h, x, y, radius);
+      ctx.arcTo(x, y, x + w, y, radius);
+      ctx.closePath();
+    }
+
+    // Auto-fit policy text size until the user manually changes it
+    let policyAutoFit = true;
+
+function getPolicyFontSize() { return clamp(parseIntOr(DEFAULT_STATE.policyFontSize, baseFontSizeInput.value), 10, 140); }
     function setPolicyFontSize(n) { baseFontSizeInput.value = clamp(n, 10, 140); }
 
     function getHeaderFontSize() { return clamp(parseIntOr(DEFAULT_STATE.headerFontSize, headerFontSizeInput.value), 10, 140); }
@@ -413,10 +428,119 @@
     function getFooterFontSize() { return clamp(parseIntOr(DEFAULT_STATE.footerFontSize, footerFontSizeInput.value), 10, 140); }
     function setFooterFontSize(n) { footerFontSizeInput.value = clamp(n, 10, 140); }
 
-    function bumpPolicy(delta) { setPolicyFontSize(getPolicyFontSize() + delta); renderAll(); }
+    function bumpPolicy(delta) { policyAutoFit = false; setPolicyFontSize(getPolicyFontSize() + delta); renderAll(); }
     function bumpHeader(delta) { setHeaderFontSize(getHeaderFontSize() + delta); renderAll(); }
     function bumpFooter(delta) { setFooterFontSize(getFooterFontSize() + delta); renderAll(); }
 
+
+    function getSelectedPresetKey() {
+      const r = presetRadios.find(r => r.checked);
+      return r ? r.value : "";
+    }
+
+    function getCurrentState() {
+      return {
+        preset: getSelectedPresetKey(),
+        noText: noInput.value,
+        yesText: yesInput.value,
+        policyFontSize: getPolicyFontSize(),
+        showHeader: !!showHeader.checked,
+        headerText: headerTextInput.value,
+        headerFontSize: getHeaderFontSize(),
+        showFooter: !!showFooter.checked,
+        footerText: footerTextInput.value,
+        footerFontSize: getFooterFontSize(),
+        roundedCorners: !!roundedCorners.checked
+      };
+    }
+
+    function applyState(s) {
+      if (!s || typeof s !== "object") return;
+
+      // Preset selection (cosmetic; text fields are authoritative)
+      if (typeof s.preset === "string" && s.preset.length) {
+        presetRadios.forEach(r => { r.checked = (r.value === s.preset); });
+      } else {
+        clearPresetSelection();
+      }
+
+      if (typeof s.noText === "string") noInput.value = s.noText;
+      if (typeof s.yesText === "string") yesInput.value = s.yesText;
+
+      if (typeof s.policyFontSize === "number") setPolicyFontSize(s.policyFontSize);
+      if (typeof s.headerFontSize === "number") setHeaderFontSize(s.headerFontSize);
+      if (typeof s.footerFontSize === "number") setFooterFontSize(s.footerFontSize);
+
+      if (typeof s.showHeader === "boolean") showHeader.checked = s.showHeader;
+      if (typeof s.headerText === "string") headerTextInput.value = s.headerText;
+
+      if (typeof s.showFooter === "boolean") showFooter.checked = s.showFooter;
+      if (typeof s.footerText === "string") footerTextInput.value = s.footerText;
+
+      if (typeof s.roundedCorners === "boolean" && roundedCorners) roundedCorners.checked = s.roundedCorners;
+
+      renderAll();
+    }
+
+    function stateToSearchParams(s) {
+      const sp = new URLSearchParams();
+      if (!s) return sp;
+
+      // Keep keys short for cleaner URLs
+      if (s.preset) sp.set("p", s.preset);
+      sp.set("no", s.noText || "");
+      sp.set("yes", s.yesText || "");
+      sp.set("pfs", String(s.policyFontSize || DEFAULT_STATE.policyFontSize));
+
+      sp.set("sh", s.showHeader ? "1" : "0");
+      sp.set("ht", s.headerText || "");
+      sp.set("hfs", String(s.headerFontSize || DEFAULT_STATE.headerFontSize));
+
+      sp.set("sf", s.showFooter ? "1" : "0");
+      sp.set("ft", s.footerText || "");
+      sp.set("ffs", String(s.footerFontSize || DEFAULT_STATE.footerFontSize));
+
+      return sp;
+
+      sp.set("rc", s.roundedCorners ? "1" : "0");
+
+      return sp;
+    }
+
+    function parseStateFromQuery() {
+      const sp = new URLSearchParams(window.location.search);
+
+      // If none of our keys are present, treat as "no state".
+      const keys = ["p", "no", "yes", "pfs", "sh", "ht", "hfs", "sf", "ft", "ffs", "rc"];
+      const hasAny = keys.some(k => sp.has(k));
+      if (!hasAny) return null;
+
+      const s = {
+        preset: sp.get("p") || "",
+        noText: sp.get("no") ?? DEFAULT_STATE.noText,
+        yesText: sp.get("yes") ?? DEFAULT_STATE.yesText,
+        policyFontSize: parseIntOr(DEFAULT_STATE.policyFontSize, sp.get("pfs")),
+        showHeader: (sp.get("sh") ?? (DEFAULT_STATE.showHeader ? "1" : "0")) === "1",
+        headerText: sp.get("ht") ?? DEFAULT_STATE.headerText,
+        headerFontSize: parseIntOr(DEFAULT_STATE.headerFontSize, sp.get("hfs")),
+        showFooter: (sp.get("sf") ?? (DEFAULT_STATE.showFooter ? "1" : "0")) === "1",
+        footerText: sp.get("ft") ?? DEFAULT_STATE.footerText,
+        footerFontSize: parseIntOr(DEFAULT_STATE.footerFontSize, sp.get("ffs")),
+        roundedCorners: (sp.get("rc") ?? (DEFAULT_STATE.roundedCorners ? "1" : "0")) === "1"
+      };
+
+      return s;
+    }
+
+    function applyStateFromQuery() {
+      const sp = new URLSearchParams(window.location.search);
+      const s = parseStateFromQuery();
+      if (s) {
+        // If the share link does not specify policy font size, auto-fit it.
+        policyAutoFit = !sp.has("pfs");
+        applyState(s);
+      }
+    }
     // -----------------------
     // Wrapping preserving spaces/newlines + breaking long words
     // -----------------------
@@ -468,18 +592,74 @@
         }
 
         if (line !== "") lines.push(line);
-        if (pi < paragraphs.length - 1) lines.push("");
       }
 
       return lines;
     }
 
+
+    // -----------------------
+    // Auto-fit policy text size
+    // -----------------------
+    function computeMaxPolicyFontSize() {
+      const W = STICKER_W;
+      const H = STICKER_H;
+
+      const sepW = Math.max(4, Math.round(W * 0.003));
+      const border = 0;
+
+      const padOuter = Math.round(W * 0.014);
+      const padSep = Math.round(W * 0.024);
+      const labelBlockW = Math.round(W * 0.16);
+
+      const innerH = H - 2 * border;
+      const totalInnerW = W - 2 * border;
+      const textAreaW = (totalInnerW - 2 * labelBlockW - sepW) / 2;
+
+      const noTextW = textAreaW - padOuter - padSep;
+      const yesTextW = textAreaW - padOuter - padSep;
+
+      const hasTitle = showHeader.checked && headerTextInput.value.trim().length > 0;
+
+      const clipTop = border + (hasTitle ? Math.round(H * 0.26) : Math.round(H * 0.12));
+      const clipBottom = border + innerH - Math.round(H * 0.08);
+      const clipH = Math.max(0, clipBottom - clipTop);
+
+      function fits(fontSize) {
+        const lineGap = Math.round(fontSize * 0.18);
+        const lh = fontSize + lineGap;
+        if (lh <= 0) return false;
+
+        const maxLines = Math.max(0, Math.floor(clipH / lh));
+
+        const noLines = wrapTextNoLimit(ctx, noInput.value, noTextW, fontSize);
+        const yesLines = wrapTextNoLimit(ctx, yesInput.value, yesTextW, fontSize);
+
+        if (noLines.length > maxLines || yesLines.length > maxLines) return false;
+
+        // Horizontal safety check (should already be satisfied by wrapping)
+        ctx.font = `bold ${fontSize}px Arial`;
+        for (const ln of noLines) if (ctx.measureText(ln).width > noTextW + 0.5) return false;
+        for (const ln of yesLines) if (ctx.measureText(ln).width > yesTextW + 0.5) return false;
+
+        return true;
+      }
+
+      // Find the largest font size that allows BOTH sides to fit.
+      for (let fs = 140; fs >= 10; fs--) {
+        if (fits(fs)) return fs;
+      }
+      return 10;
+    }
+
     function drawTextBlockClipped(opts) {
       const { ctx, text, x, y, w, h, fontSize, lineGap, align, fillStyle } = opts;
+      const clipY = y;
+      const drawY = (typeof opts.drawY === "number") ? opts.drawY : y;
 
       ctx.save();
       ctx.beginPath();
-      ctx.rect(x, y, w, h);
+      ctx.rect(x, clipY, w, h);
       ctx.clip();
 
       ctx.font = `bold ${fontSize}px Arial`;
@@ -491,10 +671,11 @@
       const lines = wrapTextNoLimit(ctx, text, maxWidth, fontSize);
 
       const lh = fontSize + lineGap;
-      const maxLinesThatFit = Math.max(0, Math.floor(h / lh));
+      const availableH = Math.max(0, (clipY + h) - drawY);
+      const maxLinesThatFit = Math.max(0, Math.floor(availableH / lh));
       const willOverflowVert = lines.length > maxLinesThatFit;
 
-      let cy = y;
+      let cy = drawY;
       for (let i = 0; i < Math.min(lines.length, maxLinesThatFit); i++) {
         const line = lines[i];
         let tx = x;
@@ -576,14 +757,15 @@
     }
 
     function drawSticker(ctx, W, H, policyFontSize) {
-      // Center separator: 25% less thick
-      const sepBase = Math.max(10, Math.round(W * 0.006));
-      const sepW = Math.max(6, Math.round(sepBase * 0.75)); // -25%
+      // Center separator: thinner and less dominant
+      const sepW = Math.max(4, Math.round(W * 0.003));
+
 
       // No outer outline/border now
       const border = 0;
 
-      const pad = Math.round(W * 0.015);
+      const padOuter = Math.round(W * 0.014);
+      const padSep = Math.round(W * 0.024);
       const labelBlockW = Math.round(W * 0.16);
       const innerH = H - 2 * border;
       const totalInnerW = W - 2 * border;
@@ -600,8 +782,9 @@
       ctx.fillRect(0, 0, W, H);
 
       // Separator (shorter height, not full)
-      const sepTopPad = Math.round(H * 0.06);
-      const sepBottomPad = Math.round(H * 0.06);
+      const hasTitle = showHeader.checked && headerTextInput.value.trim().length > 0;
+      const sepTopPad = hasTitle ? Math.round(H * 0.20) : Math.round(H * 0.08);
+      const sepBottomPad = Math.round(H * 0.10);
       const sepY = border + sepTopPad;
       const sepH = innerH - sepTopPad - sepBottomPad;
 
@@ -624,18 +807,115 @@
       ctx.fillText("NO", xNoBlock + labelBlockW / 2, H / 2);
       ctx.fillText("YES", xYesBlock + labelBlockW / 2, H / 2);
 
+      // In-image title (drawn in the central black area, above the policy text)
+      let titleOverflow = false;
+      if (hasTitle) {
+        const title = headerTextInput.value.trim();
+
+        // Clip to the central black area so it never spills into the NO/YES colour blocks
+        const titleAreaX = xNoText;
+        const titleAreaW = W - 2 * labelBlockW;
+        const titleAreaY = border;
+        const titleAreaH = Math.max(0, sepY - border);
+
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(titleAreaX, titleAreaY, titleAreaW, titleAreaH);
+        ctx.clip();
+
+        // Smaller than the old external header band
+        // Letter spacing for a cleaner "label" look (canvas has no native letter-spacing)
+        function measureSpacedText(ctx, text, spacingPx) {
+          const chars = Array.from(text);
+          if (chars.length === 0) return 0;
+          let w = 0;
+          for (let i = 0; i < chars.length; i++) {
+            w += ctx.measureText(chars[i]).width;
+            if (i < chars.length - 1) w += spacingPx;
+          }
+          return w;
+        }
+
+        function drawCenteredSpacedText(ctx, text, cx, cy, spacingPx) {
+          const prevAlign = ctx.textAlign;
+          ctx.textAlign = "left";
+          const chars = Array.from(text);
+          if (chars.length === 0) { ctx.textAlign = prevAlign; return; }
+          const widths = chars.map(ch => ctx.measureText(ch).width);
+          const totalW = widths.reduce((a,b)=>a+b,0) + spacingPx * (chars.length - 1);
+          let x = cx - totalW / 2;
+          for (let i = 0; i < chars.length; i++) {
+            ctx.fillText(chars[i], x, cy);
+            x += widths[i] + spacingPx;
+          }
+          ctx.textAlign = prevAlign;
+        }
+
+        let titleSize = Math.round(getHeaderFontSize() * 0.65);
+        titleSize = Math.max(16, Math.min(titleSize, 36));
+
+        // Increase letter spacing and scale it with font size (clamped)
+        const getTitleSpacingPx = (sizePx) => Math.max(4, Math.min(10, Math.round(sizePx * 0.14)));
+
+        while (titleSize > 16) {
+          ctx.font = `600 ${titleSize}px Arial`;
+          const spacingPx = getTitleSpacingPx(titleSize);
+          if (measureSpacedText(ctx, title, spacingPx) <= titleAreaW * 0.94) break;
+          titleSize -= 1;
+        }
+        ctx.font = `600 ${titleSize}px Arial`;
+        const titleSpacingPx = getTitleSpacingPx(titleSize);
+        titleOverflow = measureSpacedText(ctx, title, titleSpacingPx) > titleAreaW * 0.94;
+
+        ctx.fillStyle = COLORS.titleText;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        drawCenteredSpacedText(ctx, title, titleAreaX + titleAreaW / 2, titleAreaY + titleAreaH / 2, titleSpacingPx);
+
+        ctx.restore();
+      }
+
+
       // Text areas (clipped, no shrink)
-      const startY = border + Math.round(H * 0.16);
-      const boxH = innerH - Math.round(H * 0.16) - Math.round(H * 0.10);
+      // Vertically centre each text block so it aligns with the NO/YES labels.
       const lineGap = Math.round(policyFontSize * 0.18);
+      const lh = policyFontSize + lineGap;
+
+      // Safe clip region: keep text below the in-image title and away from the bottom edge.
+      const clipTop = border + (hasTitle ? Math.round(H * 0.26) : Math.round(H * 0.12));
+      const clipBottom = border + innerH - Math.round(H * 0.08);
+      const clipH = Math.max(0, clipBottom - clipTop);
+
+      // Target vertical centre (same as YES/NO labels).
+      const yMid = border + innerH / 2;
+
+      // Padding: more space around the centre divider
+      const noTextX = xNoText + padOuter;
+      const noTextW = textAreaW - padOuter - padSep;
+      const yesTextX = xYesText + padSep;
+      const yesTextW = textAreaW - padOuter - padSep;
+
+      function computeDrawY(text, width) {
+        const lines = wrapTextNoLimit(ctx, text, width, policyFontSize);
+        const maxLines = Math.max(0, Math.floor(clipH / lh));
+        const visibleLines = Math.min(lines.length, maxLines);
+        const visibleH = visibleLines * lh;
+        let y = yMid - (visibleH / 2);
+        y = Math.max(clipTop, Math.min(y, clipBottom - visibleH));
+        return y;
+      }
+
+      const noDrawY = computeDrawY(noInput.value, noTextW);
+      const yesDrawY = computeDrawY(yesInput.value, yesTextW);
 
       const noOverflow = drawTextBlockClipped({
         ctx,
         text: noInput.value,
-        x: xNoText + pad,
-        y: startY,
-        w: textAreaW - 2 * pad,
-        h: boxH,
+        x: noTextX,
+        y: clipTop,
+        w: noTextW,
+        h: clipH,
+        drawY: noDrawY,
         fontSize: policyFontSize,
         lineGap,
         align: "left",
@@ -645,50 +925,50 @@
       const yesOverflow = drawTextBlockClipped({
         ctx,
         text: yesInput.value,
-        x: xYesText + pad,
-        y: startY,
-        w: textAreaW - 2 * pad,
-        h: boxH,
+        x: yesTextX,
+        y: clipTop,
+        w: yesTextW,
+        h: clipH,
+        drawY: yesDrawY,
         fontSize: policyFontSize,
         lineGap,
         align: "right",
         fillStyle: COLORS.text
       }).overflow;
 
-      return { overflow: (noOverflow || yesOverflow) };
+return { overflow: (noOverflow || yesOverflow || titleOverflow) };
     }
 
     function setCanvasSizeAndRender() {
-      const hasHeader = showHeader.checked;
       const hasFooter = showFooter.checked;
 
-      const totalH = (hasHeader ? HEADER_H : 0) + STICKER_H + (hasFooter ? FOOTER_H : 0);
+      // The header text is rendered inside the main image (sticker), so we do not add an extra header band height.
+      const totalH = STICKER_H + (hasFooter ? FOOTER_H : 0);
       canvas.width = STICKER_W;
       canvas.height = totalH;
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      let overflow = false;
-      let y = 0;
-
-      if (hasHeader) {
-        const headerOverflow = drawHeaderBand(ctx, STICKER_W, HEADER_H, headerTextInput.value, getHeaderFontSize());
-        overflow = overflow || headerOverflow.overflow;
-        y += HEADER_H;
+      const useRounded = !!(roundedCorners && roundedCorners.checked);
+      canvas.classList.toggle("rc-on", useRounded);
+      const cornerR = Math.max(16, Math.min(42, Math.round(Math.min(canvas.width, canvas.height) * 0.06)));
+      if (useRounded) {
+        ctx.save();
+        pathRoundRect(ctx, 0, 0, canvas.width, canvas.height, cornerR);
+        ctx.clip();
       }
 
-      ctx.save();
-      ctx.translate(0, y);
+      let overflow = false;
+
       const stickerOverflow = drawSticker(ctx, STICKER_W, STICKER_H, getPolicyFontSize());
       overflow = overflow || stickerOverflow.overflow;
-      ctx.restore();
-
-      y += STICKER_H;
 
       if (hasFooter) {
-        const footerOverflow = drawFooterBand(ctx, STICKER_W, FOOTER_H, y, footerTextInput.value, getFooterFontSize());
+        const footerOverflow = drawFooterBand(ctx, STICKER_W, FOOTER_H, STICKER_H, footerTextInput.value, getFooterFontSize());
         overflow = overflow || footerOverflow.overflow;
       }
+
+      if (useRounded) ctx.restore();
 
       overflowWarning.style.display = overflow ? "block" : "none";
     }
@@ -705,12 +985,13 @@
       yesInput.value = p.yes;
     }
 
+    
     function setDefaults() {
+      policyAutoFit = true;
+
       clearPresetSelection();
       noInput.value = DEFAULT_STATE.noText;
       yesInput.value = DEFAULT_STATE.yesText;
-
-      setPolicyFontSize(DEFAULT_STATE.policyFontSize);
 
       showHeader.checked = DEFAULT_STATE.showHeader;
       headerTextInput.value = DEFAULT_STATE.headerText;
@@ -720,10 +1001,16 @@
       footerTextInput.value = DEFAULT_STATE.footerText;
       setFooterFontSize(DEFAULT_STATE.footerFontSize);
 
+
+      if (roundedCorners) roundedCorners.checked = DEFAULT_STATE.roundedCorners;
+
+      // Maximise policy text size by default (until the user overrides it)
+      setPolicyFontSize(computeMaxPolicyFontSize());
+
       setCanvasSizeAndRender();
     }
 
-    function renderAll() { setCanvasSizeAndRender(); }
+    function renderAll() { if (policyAutoFit) setPolicyFontSize(computeMaxPolicyFontSize()); setCanvasSizeAndRender(); }
 
     // -----------------------
     // Export / clipboard
@@ -752,8 +1039,14 @@
     }
 
     async function copyLinkRobust() {
-      const url = window.location.origin + window.location.pathname;
-      try {
+      const base = (window.location.origin && window.location.origin !== "null")
+        ? (window.location.origin + window.location.pathname)
+        : window.location.href.split("?")[0].split("#")[0];
+
+      const sp = stateToSearchParams(getCurrentState());
+      const qs = sp.toString();
+      const url = qs ? (base + "?" + qs) : base;
+try {
         if (navigator.clipboard && navigator.clipboard.writeText) {
           await navigator.clipboard.writeText(url);
           alert("Link copied to clipboard.");
@@ -798,7 +1091,9 @@
     showFooter.addEventListener("change", onAnyChange);
     footerTextInput.addEventListener("input", onAnyChange);
 
-    baseFontSizeInput.addEventListener("input", () => { setPolicyFontSize(getPolicyFontSize()); onAnyChange(); });
+    if (roundedCorners) roundedCorners.addEventListener("change", onAnyChange);
+
+    baseFontSizeInput.addEventListener("input", () => { policyAutoFit = false; setPolicyFontSize(getPolicyFontSize()); onAnyChange(); });
     headerFontSizeInput.addEventListener("input", () => { setHeaderFontSize(getHeaderFontSize()); onAnyChange(); });
     footerFontSizeInput.addEventListener("input", () => { setFooterFontSize(getFooterFontSize()); onAnyChange(); });
 
@@ -820,6 +1115,15 @@
 
     // Init: always reset to defaults on reload
     setDefaults();
+
+    // Wire the "read more" link for GitHub Pages
+    if (readMoreLink) {
+      readMoreLink.href = READ_MORE_URL;
+      readMoreLink.textContent = READ_MORE_URL;
+    }
+
+    // If the page was opened with a share link, apply it on top of defaults
+    applyStateFromQuery();
   </script>
 </body>
 </html>
