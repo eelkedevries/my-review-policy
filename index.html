@@ -163,22 +163,50 @@
     }
 
     .actions {
-      display: flex;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 8px;
-      flex-wrap: nowrap;
       margin: 10px 0 0 0;
-      overflow-x: auto;
-      padding-bottom: 4px;
     }
     button.action {
-      padding: 8px 10px;
+      width: 100%;
+      padding: 10px 10px;
       font-size: 14px;
+      line-height: 1.2;
+      min-height: 44px;
+      box-sizing: border-box;
+      appearance: none;
+      -webkit-appearance: none;
       white-space: nowrap;
       cursor: pointer;
       border: 1px solid #ccc;
       border-radius: 8px;
       background: #fff;
+      text-align: center;
     }
+    /* Keep dimensions identical when disabled; only reduce opacity and change cursor. */
+    button.action:disabled {
+      background: #fff;
+      border-color: #ccc;
+      color: inherit;
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    /* Avoid any UA focus styling that could alter perceived button size */
+    button.action:focus { outline: none; }
+    button.action:focus-visible { outline: 2px solid #999; outline-offset: 2px; }
+
+    .export-status {
+      margin-top: 10px;
+      font-size: 13px;
+      line-height: 1.25;
+      min-height: 2.6em; /* reserve space for up to ~2 lines without layout jump */
+      white-space: normal;
+    }
+    .export-status.info { color: #333; }
+    .export-status.ok { color: #0a6; }
+    .export-status.err { color: #b00; }
     button.action:active { transform: translateY(1px); }
 
     .option-row {
@@ -272,7 +300,12 @@
   cursor: pointer;
 }
 .lightbox-close:active { transform: translateY(1px); }
-  </style>
+  
+@media (max-width: 520px) {
+    .actions { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+</style>
 </head>
 
 <body>
@@ -315,6 +348,7 @@
         <button class="action" id="copyLinkBtn">Copy link</button>
         <button class="action" id="clearBtn">Clear</button>
       </div>
+      <div id="exportStatus" class="export-status" role="status" aria-live="polite"></div>
 
       <div class="option-row">
         <label class="check"><input type="checkbox" id="roundedCorners"> Rounded corners</label>
@@ -518,6 +552,7 @@ function closeLightbox() {
     const textSizeLimitMsg = document.getElementById("textSizeLimitMsg");
 
     const downloadBtn = document.getElementById("downloadBtn");
+    const exportStatus = document.getElementById("exportStatus");
     const copyBtn = document.getElementById("copyBtn");
     const copyLinkBtn = document.getElementById("copyLinkBtn");
     const clearBtn = document.getElementById("clearBtn");
@@ -1422,7 +1457,58 @@ return { overflow: (noOverflow || yesOverflow || titleOverflow), noOverflow, yes
       setCanvasSizeAndRender();
     }
 
+        // -----------------------
+    // Export status / guards
     // -----------------------
+    let exportBusy = false;
+    let exportStatusTimer = null;
+    function setExportStatus(msg, kind = "info", autoClearMs = 4000) {
+      if (!exportStatus) return;
+      exportStatus.classList.remove("info", "ok", "err");
+      exportStatus.classList.add(kind);
+      exportStatus.textContent = msg || "";
+      if (exportStatusTimer) { clearTimeout(exportStatusTimer); exportStatusTimer = null; }
+      if (msg && autoClearMs) {
+        exportStatusTimer = setTimeout(() => {
+          exportStatus.textContent = "";
+          exportStatus.classList.remove("info", "ok", "err");
+        }, autoClearMs);
+      }
+    }
+    function setExportButtonsEnabled(enabled) {
+      const v = !!enabled;
+      if (downloadBtn) downloadBtn.disabled = !v;
+      if (copyBtn) copyBtn.disabled = !v;
+      if (copyLinkBtn) copyLinkBtn.disabled = !v;
+    }
+    async function runExportAction(fn) {
+      if (exportBusy) return;
+      exportBusy = true;
+      setExportButtonsEnabled(false);
+
+      // Keep the status area stable; avoid alerts/toasts that can disrupt layout on mobile.
+      setExportStatus("", "info", 0);
+
+      try {
+        await fn();
+      } catch (e) {
+        console.error(e);
+        const proto = (window.location && window.location.protocol) ? window.location.protocol : "";
+        let hint = "";
+        if (proto === "file:" || proto === "content:") {
+          hint = " You opened this page from local storage (" + proto + "). Clipboard and downloads are often restricted there. Open the GitHub Pages (HTTPS) version instead.";
+        } else if (!window.isSecureContext) {
+          hint = " This page is not in a secure context. Some clipboard features require HTTPS.";
+        }
+        const msg = (e && e.message) ? e.message : "Action failed.";
+        setExportStatus(msg + hint, "err", 9000);
+      } finally {
+        exportBusy = false;
+        setExportButtonsEnabled(true);
+      }
+    }
+
+// -----------------------
     // Export / clipboard
     // -----------------------
     function canvasToBlob(type = "image/png", quality) {
@@ -1437,6 +1523,15 @@ return { overflow: (noOverflow || yesOverflow || titleOverflow), noOverflow, yes
     }
 
     async function downloadPNG() {
+      // On mobile when opened from local storage (file:/content:), "download" is often blocked/ignored.
+      // In that case, open the PNG in a new tab immediately (still within the click gesture) so the user can save/share from there.
+      const proto = (window.location && window.location.protocol) ? window.location.protocol : "";
+      if (proto === "file:" || proto === "content:") {
+        openPNGInNewTab();
+        setExportStatus("Opened the PNG in a new tab (local-file mode often blocks direct downloads). Save it from the new tab.", "ok", 9000);
+        return;
+      }
+
       // Prefer Blob/ObjectURL (more robust than data: URLs across browsers)
       try {
         const blob = await canvasToBlob("image/png");
@@ -1453,6 +1548,7 @@ return { overflow: (noOverflow || yesOverflow || titleOverflow), noOverflow, yes
 
         // Revoke after click has been dispatched
         setTimeout(() => URL.revokeObjectURL(url), 1500);
+        setExportStatus("PNG download started.", "ok");
         return;
       } catch (e) {
         console.error(e);
@@ -1467,9 +1563,12 @@ return { overflow: (noOverflow || yesOverflow || titleOverflow), noOverflow, yes
         document.body.appendChild(a);
         a.click();
         a.remove();
+        setExportStatus("PNG download started.", "ok");
       } catch (e) {
         console.error(e);
-        alert("Download failed in this browser context. Try opening the page via HTTPS (e.g., GitHub Pages) and try again.");
+        // Last-resort: open in a new tab
+        openPNGInNewTab();
+        setExportStatus("Direct download failed. I opened the PNG in a new tab so you can save it from there.", "err", 9000);
       }
     }
 
@@ -1485,26 +1584,26 @@ return { overflow: (noOverflow || yesOverflow || titleOverflow), noOverflow, yes
     async function copyImage() {
       // Clipboard image write requires a secure context (HTTPS / localhost) in most browsers.
       if (!window.isSecureContext) {
-        alert("Copy image requires a secure context (HTTPS). Use “Download PNG” instead.");
+        setExportStatus("Copy image requires HTTPS (secure context). Use “Download PNG” instead.", "err", 7000);
         return;
       }
 
       try {
         if (!navigator.clipboard || !window.ClipboardItem) {
-          alert("Clipboard image copy is not supported in this browser. Use “Download PNG” instead.");
+          setExportStatus("Clipboard image copy is not supported in this browser. Use “Download PNG” instead.", "err", 7000);
           return;
         }
 
         const blob = await canvasToBlob("image/png");
-        if (!blob) { alert("Could not create image blob. Use “Download PNG” instead."); return; }
+        if (!blob) { setExportStatus("Could not create image blob. Use “Download PNG” instead.", "err", 7000); return; }
 
         await navigator.clipboard.write([new ClipboardItem({ "image/png": blob })]);
-        alert("Image copied to clipboard.");
+        setExportStatus("Image copied to clipboard.", "ok");
       } catch (e) {
         console.error(e);
         // As a practical fallback, open the PNG in a new tab so users can use browser-native copy/save.
         openPNGInNewTab();
-        alert("Copy failed. I opened the PNG in a new tab as a fallback (you can copy/save from there).");
+        setExportStatus("Copy failed. I opened the PNG in a new tab as a fallback (you can copy/save from there).", "err", 8000);
       }
     }
 
@@ -1520,7 +1619,7 @@ return { overflow: (noOverflow || yesOverflow || titleOverflow), noOverflow, yes
 try {
         if (navigator.clipboard && navigator.clipboard.writeText) {
           await navigator.clipboard.writeText(url);
-          alert("Link copied to clipboard.");
+          setExportStatus("Link copied to clipboard.", "ok");
           return;
         }
       } catch (e) {}
@@ -1537,10 +1636,10 @@ try {
         tmp.setSelectionRange(0, tmp.value.length);
         const ok = document.execCommand("copy");
         document.body.removeChild(tmp);
-        if (ok) alert("Link copied to clipboard.");
-        else alert("Copy failed. Please copy from the address bar.");
+        if (ok) setExportStatus("Link copied to clipboard.", "ok");
+        else setExportStatus("Copy failed. Please copy from the address bar.", "err", 7000);
       } catch (e) {
-        alert("Copy failed. Please copy from the address bar.");
+        setExportStatus("Copy failed. Please copy from the address bar.", "err", 7000);
       }
     }
 
@@ -1600,9 +1699,9 @@ try {
     footerPlusBtn.addEventListener("click", () => bumpFooter(+2));
     footerMinusBtn.addEventListener("click", () => bumpFooter(-2));
 
-    downloadBtn.addEventListener("click", downloadPNG);
-    copyBtn.addEventListener("click", copyImage);
-    copyLinkBtn.addEventListener("click", copyLinkRobust);
+    downloadBtn.addEventListener("click", (e) => { e.preventDefault(); e.stopPropagation(); runExportAction(downloadPNG); });
+    copyBtn.addEventListener("click", (e) => { e.preventDefault(); e.stopPropagation(); runExportAction(copyImage); });
+    copyLinkBtn.addEventListener("click", (e) => { e.preventDefault(); e.stopPropagation(); runExportAction(copyLinkRobust); });
     clearBtn.addEventListener("click", setDefaults);
 
 
