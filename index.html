@@ -316,7 +316,7 @@
       <p class="subtext">
       This YES/NO image generator helps researchers share their personal review policy in any way they want (for example, a social media post or a quick reply to unwanted review requests), including automated mass invitations, predatory journals, and high-fee for-profit publishers that rely on unpaid reviewing and often place accepted papers behind paywalls.
       <strong>#MyReviewPolicy</strong>
-      &nbsp;Read more here: <a href="#" id="readMoreLink">[link coming soon]</a>
+      &nbsp;Read more here: <a href="https://github.com/eelkedevries/my-review-policy" id="readMoreLink" target="_blank" rel="noopener noreferrer">https://github.com/eelkedevries/my-review-policy</a>
       <span class="iconbar" aria-label="Links">
         <a class="iconlink" href="https://www.linkedin.com/in/eelkedevries" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
           <svg viewBox="0 0 24 24" role="img" aria-hidden="true">
@@ -349,6 +349,7 @@
         <button class="action" id="clearBtn">Clear</button>
       </div>
       <div id="exportStatus" class="export-status" role="status" aria-live="polite"></div>
+<div id="fatalError" class="export-status err" style="display:none; margin-top:8px;" role="status" aria-live="polite"></div>
 
       <div class="option-row">
         <label class="check"><input type="checkbox" id="roundedCorners"> Rounded corners</label>
@@ -442,6 +443,28 @@
   </div>
 
   <script>
+(function(){
+  function showFatal(err){
+    try{
+      const el = document.getElementById('fatalError') || document.getElementById('exportStatus');
+      if (!el) return;
+      el.style.display = 'block';
+      el.classList.add('err');
+      const msg = (err && err.message) ? err.message : String(err);
+      el.textContent = 'Fatal error: ' + msg;
+    } catch(_) {}
+  }
+
+  // Surface async errors too (useful on mobile where devtools is absent)
+  window.addEventListener('error', (ev) => {
+    try { showFatal(ev && ev.error ? ev.error : (ev && ev.message ? ev.message : 'Unknown error')); } catch(_) {}
+  });
+  window.addEventListener('unhandledrejection', (ev) => {
+    try { showFatal(ev && ev.reason ? ev.reason : 'Unhandled promise rejection'); } catch(_) {}
+  });
+
+  function initApp(){
+
     // -----------------------
     // Configuration
     // -----------------------
@@ -586,28 +609,4 @@ function closeLightbox() {
 
     function hasInImageTitle() {
       return !!(showHeader && showHeader.checked && headerTextInput && headerTextInput.value.trim().length > 0);
-    }
-
-    function showSizeLimitMessage(msg) {
-      if (!textSizeLimitMsg) return;
-      textSizeLimitMsg.textContent = msg;
-      textSizeLimitMsg.style.display = "block";
-    }
-    function clearSizeLimitMessage() {
-      if (!textSizeLimitMsg) return;
-      textSizeLimitMsg.textContent = "";
-      textSizeLimitMsg.style.display = "none";
-    }
-
-
-    function refreshSizeLimitMessage(maxPolicy, maxHeader) {
-      // Show a persistent explanation when the user is at the maximum size for the available space.
-      // We suppress the message for the initial policy auto-fit state.
-      const hasTitle = (showHeader && showHeader.checked) && (headerTextInput && headerTextInput.value.trim().length > 0);
-
-      const atPolicyMax = (getPolicyFontSize() >= (maxPolicy - 0.0001));
-      const atHeaderMax = hasTitle && (getHeaderFontSize() >= (maxHeader - 0.0001));
-
-      if (atPolicyMax && atHeaderMax) {
-        showSizeLimitMessage("Heading and policy text sizes cannot be increased further because they would not fit in the image.");
- 
+   
