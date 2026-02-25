@@ -43,12 +43,7 @@
     .subsection {
       margin-top: 18px;
       padding-top: 14px;
-      border-top: none;
-    }
-    .subsection:first-of-type {
-      margin-top: 0;
-      padding-top: 0;
-      border-top: none;
+      border-top: 1px solid #e6e6e6;
     }
     .subheading {
       font-size: 18px;
@@ -58,21 +53,11 @@
     }
 
 
-
-    .section-box{
-      border: 1px solid #d7dee9;
-      border-radius: 12px;
-      padding: 12px 12px;
-      background: #f7f8fa;
-      margin: 0;
-    }
-    .section-box--hf{ background: #f7f8fa; }
-    .section-box--sizes{ background: #f7f8fa; }
-.row { display: flex; gap: 12px; flex-wrap: wrap; margin: 12px 0; align-items: flex-start; }
+    .row { display: flex; gap: 12px; flex-wrap: wrap; margin: 12px 0; align-items: flex-start; }
     .col { flex: 1 1 420px; }
 
     label { display: block; font-size: 14px; margin-bottom: 6px; }
-    input[type="text"], textarea {
+    input[type="text"], textarea, select {
       width: 100%;
       padding: 10px 12px;
       font-size: 16px;
@@ -107,51 +92,37 @@
     .option-row input[type="checkbox"] { transform: translateY(1px); }
 
     .font-control {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 12px;
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  background: #fafafa;
-}
-.font-control .label { font-size: 14px; font-weight: 700; color: #111; }
-.font-control-row {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-}
-.font-size-box {
-  width: 70px;
-  text-align: center;
-  font-size: 16px;
-}
-.stepper {
-  display: inline-flex;
-  flex-direction: column;
-  gap: 6px;
-}
-.stepper button {
-  width: 36px;
-  height: 32px;
-  padding: 0;
-  font-size: 18px;
-  line-height: 1;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background: #fff;
-  cursor: pointer;
-}
-.stepper button:active { transform: translateY(1px); }
-.stepper button:disabled {
-  background: #f0f0f0;
-  color: #888;
-  border-color: #ddd;
-  cursor: not-allowed;
-  opacity: 0.65;
-}
-
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 10px;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      background: #fafafa;
+    }
+    .font-control .label { font-size: 14px; font-weight: 700; color: #111; }
+    .font-size-box {
+      width: 70px;
+      text-align: center;
+      font-size: 16px;
+    }
+    .stepper {
+      display: inline-flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .stepper button {
+      width: 36px;
+      height: 32px;
+      padding: 0;
+      font-size: 18px;
+      line-height: 1;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background: #fff;
+      cursor: pointer;
+    }
+    .stepper button:active { transform: translateY(1px); }
 
     .adjusters-row {
       display: flex;
@@ -163,50 +134,22 @@
     }
 
     .actions {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 8px;
-      margin: 10px 0 0 0;
-    }
+  display: flex;
+  gap: 8px;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  padding-bottom: 6px;
+  margin: 10px 0 0 0;
+}
     button.action {
-      width: 100%;
-      padding: 10px 10px;
-      font-size: 14px;
-      line-height: 1.2;
-      min-height: 44px;
-      box-sizing: border-box;
-      appearance: none;
-      -webkit-appearance: none;
-      white-space: nowrap;
-      cursor: pointer;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      background: #fff;
-      text-align: center;
-    }
-    /* Keep dimensions identical when disabled; only reduce opacity and change cursor. */
-    button.action:disabled {
-      background: #fff;
-      border-color: #ccc;
-      color: inherit;
-      opacity: 0.55;
-      cursor: not-allowed;
-    }
-
-    /* Avoid any UA focus styling that could alter perceived button size */
-    button.action:focus { outline: none; }
-    button.action:focus-visible { outline: 2px solid #999; outline-offset: 2px; }
-
-    .export-status {
-      margin-top: 10px;
-      font-size: 13px;
-      line-height: 1.25;
-      min-height: 2.6em; /* reserve space for up to ~2 lines without layout jump */
-      white-space: normal;
-    }
-    .export-status.info { color: #333; }
-    .export-status.ok { color: #0a6; }
-    .export-status.err { color: #b00; }
+  padding: 8px 10px;
+  font-size: 14px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background: #fff;
+  white-space: nowrap;
+}
     button.action:active { transform: translateY(1px); }
 
     .option-row {
@@ -226,7 +169,7 @@
     }
 
 
-    .divider { display: none; }
+    .divider { height: 1px; background: #eee; margin: 14px 0; }
 
     .warning {
       display: none;
@@ -240,72 +183,61 @@
       line-height: 1.35;
     }
 
-
-    .limit-msg {
-      display: none;
-      color: #b00000;
-      font-size: 14px;
-      margin-top: 10px;
-      line-height: 1.35;
-    }
-
-    canvas { width: 100%; border: 1px solid #ddd; border-radius: 0; display: block; background: transparent; cursor: zoom-in; }
+    canvas { width: 100%; border: 1px solid #ddd; border-radius: 0; display: block; background: transparent; }
     canvas.rc-on { border-radius: 12px; }
 
     .inline-grow { flex: 1 1 520px; min-width: 260px; }
-  
+.hidden { display: none !important; }
 
-/* Lightbox (enlarged preview) */
+/* Click-to-enlarge for the current image preview */
+#imagePanel canvas { cursor: zoom-in; }
+
+/* Policy font control: label above input/stepper */
+.font-control.policy { flex-direction: column; align-items: flex-start; gap: 6px; }
+.font-control.policy .font-row { display: inline-flex; align-items: center; gap: 10px; }
+
+/* Header/Footer font controls: label above input/stepper */
+.font-control.stacked { flex-direction: column; align-items: flex-start; gap: 6px; }
+.font-control.stacked .font-row { display: inline-flex; align-items: center; gap: 10px; }
+
+/* In-page image lightbox (modal overlay) */
 .lightbox {
   position: fixed;
   inset: 0;
   display: none;
   align-items: center;
   justify-content: center;
+  background: rgba(0, 0, 0, 0.65);
   z-index: 9999;
+  padding: 24px;
 }
 .lightbox.open { display: flex; }
-.lightbox-backdrop {
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.75);
-}
-.lightbox-content {
-  position: relative;
-  z-index: 1;
-  max-width: 96vw;
-  max-height: 96vh;
-  padding: 16px;
-}
+.lightbox-inner { position: relative; width: 96vw; max-width: 1400px; }
 .lightbox-img {
-  display: block;
-  max-width: 96vw;
-  max-height: 96vh;
+  width: 100%;
   height: auto;
-  width: auto;
-  box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+  display: block;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: transparent;
 }
 .lightbox-close {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: -12px;
+  right: -12px;
   width: 40px;
   height: 40px;
   border-radius: 999px;
-  border: 1px solid rgba(255,255,255,0.35);
-  background: rgba(0,0,0,0.45);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(0, 0, 0, 0.65);
   color: #fff;
   font-size: 26px;
   line-height: 1;
   cursor: pointer;
 }
 .lightbox-close:active { transform: translateY(1px); }
-  
-@media (max-width: 520px) {
-    .actions { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
-
-</style>
+body.modal-open { overflow: hidden; }
+  </style>
 </head>
 
 <body>
@@ -316,7 +248,7 @@
       <p class="subtext">
       This YES/NO image generator helps researchers share their personal review policy in any way they want (for example, a social media post or a quick reply to unwanted review requests), including automated mass invitations, predatory journals, and high-fee for-profit publishers that rely on unpaid reviewing and often place accepted papers behind paywalls.
       <strong>#MyReviewPolicy</strong>
-      &nbsp;Read more here: <a href="https://github.com/eelkedevries/my-review-policy" id="readMoreLink" target="_blank" rel="noopener noreferrer">https://github.com/eelkedevries/my-review-policy</a>
+      &nbsp;Read more here: <a href="#" id="readMoreLink">[link coming soon]</a>
       <span class="iconbar" aria-label="Links">
         <a class="iconlink" href="https://www.linkedin.com/in/eelkedevries" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
           <svg viewBox="0 0 24 24" role="img" aria-hidden="true">
@@ -334,7 +266,8 @@
     </div>
 
 <div class="panel" id="imagePanel">
-<div id="overflowWarning" class="warning" role="status" aria-live="polite">
+      <h2 class="section-heading">Current image</h2>
+      <div id="overflowWarning" class="warning" role="status" aria-live="polite">
         Some text does not fit in the image at the current font sizes. Reduce the relevant font size, shorten the text, or disable header/footer.
       </div>
 
@@ -348,18 +281,21 @@
         <button class="action" id="copyLinkBtn">Copy link</button>
         <button class="action" id="clearBtn">Clear</button>
       </div>
-      <div id="exportStatus" class="export-status" role="status" aria-live="polite"></div>
-<div id="fatalError" class="export-status err" style="display:none; margin-top:8px;" role="status" aria-live="polite"></div>
 
       <div class="option-row">
         <label class="check"><input type="checkbox" id="roundedCorners"> Rounded corners</label>
+
+        <select id="imageSize" class="hidden" aria-hidden="true" tabindex="-1">
+          <option value="standard">Standard (1800×360)</option>
+          <option value="linkedin">LinkedIn banner (1584×396)</option>
+        </select>
       </div>
     </div>
 
 <div class="panel" id="adjustPanel">
       <h2 class="section-heading">Personalize message</h2>
 
-<div class="row">
+      <div class="row">
         <div class="col">
           <label for="noText">custom NO text</label>
           <textarea id="noText">Publishing fees + paywalls</textarea>
@@ -369,102 +305,73 @@
           <textarea id="yesText">Diamond open access</textarea>
         </div>
       </div>
-    </div>
 
-    
-
-
-      <div class="divider"></div>
-<div class="subsection">
-<div class="section-box section-box--hf">
-<div class="option-row">
-        <input id="showHeader" type="checkbox" checked />
-        <label for="showHeader" style="margin:0; font-weight:700;">Add heading text on image</label>
-        <div class="inline-grow">
-          <input id="headerText" type="text" value="MY PEER REVIEW POLICY" />
-        </div>
-      </div>
-
-            <div class="option-row">
-        <input id="showFooter" type="checkbox" />
-        <label for="showFooter" style="margin:0; font-weight:700;">Add footer text below image</label>
-        <div class="inline-grow">
-          <input id="footerText" type="text" value="" placeholder="(optional)" />
-        </div>
-      </div>
-</div>
-    </div>
-
-    
-
-<div class="subsection">
-      <div class="section-box section-box--sizes">
-        <h3 class="subheading">Adjust text sizes</h3>
-        <div class="adjusters-row" aria-label="Adjust text sizes">
-        <div class="font-control" aria-label="Policy font size control">
-          <div class="label">Policy</div>
-          <div class="font-control-row">
-            <input id="baseFontSize" class="font-size-box" type="text" inputmode="numeric" value="64" aria-label="Policy text size" />
-            <div class="stepper" aria-label="Increase or decrease policy font size">
-              <button id="fontPlus" type="button" aria-label="Increase policy font size">+</button>
-              <button id="fontMinus" type="button" aria-label="Decrease policy font size">−</button>
-            </div>
+      <div class="subsection">
+        <div class="option-row">
+          <input id="showHeader" type="checkbox" checked />
+          <label for="showHeader" style="margin:0; font-weight:700;">Add heading text on image</label>
+          <div class="inline-grow">
+            <input id="headerText" type="text" value="MY PEER REVIEW POLICY" />
           </div>
         </div>
 
-        <div class="font-control" aria-label="Header font size control">
-          <div class="label">Header</div>
-          <div class="font-control-row">
-            <input id="headerFontSize" class="font-size-box" type="text" inputmode="numeric" value="40" aria-label="Header text size" />
-            <div class="stepper" aria-label="Increase or decrease header font size">
+        <div class="option-row">
+          <input id="showFooter" type="checkbox" />
+          <label for="showFooter" style="margin:0; font-weight:700;">Add footer text below image</label>
+          <div class="inline-grow">
+            <input id="footerText" type="text" value="" placeholder="(optional)" />
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3 class="subheading">Adjust text sizes</h3>
+        <div class="adjusters-row" aria-label="Adjust text sizes">
+          <div class="font-control policy" aria-label="Policy size control">
+            <div class="label">Policy</div>
+            <div class="font-row">
+              <input id="baseFontSize" class="font-size-box" type="text" inputmode="numeric" value="64" aria-label="Policy size" />
+              <div class="stepper" aria-label="Increase or decrease policy size">
+                <button id="fontPlus" type="button" aria-label="Increase policy size">+</button>
+                <button id="fontMinus" type="button" aria-label="Decrease policy size">−</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="font-control stacked" aria-label="Header font size control">
+            <div class="label">Header</div>
+            <div class="font-row">
+              <input id="headerFontSize" class="font-size-box" type="text" inputmode="numeric" value="40" aria-label="Header text size" />
+              <div class="stepper" aria-label="Increase or decrease header font size">
               <button id="headerPlus" type="button" aria-label="Increase header font size">+</button>
               <button id="headerMinus" type="button" aria-label="Decrease header font size">−</button>
             </div>
+            </div>
           </div>
-        </div>
 
-        <div class="font-control" aria-label="Footer font size control">
-          <div class="label">Footer</div>
-          <div class="font-control-row">
-            <input id="footerFontSize" class="font-size-box" type="text" inputmode="numeric" value="40" aria-label="Footer text size" />
-            <div class="stepper" aria-label="Increase or decrease footer font size">
+          <div class="font-control stacked" aria-label="Footer font size control">
+            <div class="label">Footer</div>
+            <div class="font-row">
+              <input id="footerFontSize" class="font-size-box" type="text" inputmode="numeric" value="40" aria-label="Footer text size" />
+              <div class="stepper" aria-label="Increase or decrease footer font size">
               <button id="footerPlus" type="button" aria-label="Increase footer font size">+</button>
               <button id="footerMinus" type="button" aria-label="Decrease footer font size">−</button>
+            </div>
             </div>
           </div>
         </div>
       </div>
-      </div>
-      <div id="textSizeLimitMsg" class="limit-msg" role="status" aria-live="polite"></div>
-    
+    </div>
+  </div>
 
-    
+  <div id="lightbox" class="lightbox" aria-hidden="true">
+    <div class="lightbox-inner">
+      <button id="lightboxClose" class="lightbox-close" type="button" aria-label="Close">×</button>
+      <img id="lightboxImg" class="lightbox-img" alt="Enlarged review policy image" />
     </div>
   </div>
 
   <script>
-(function(){
-  function showFatal(err){
-    try{
-      const el = document.getElementById('fatalError') || document.getElementById('exportStatus');
-      if (!el) return;
-      el.style.display = 'block';
-      el.classList.add('err');
-      const msg = (err && err.message) ? err.message : String(err);
-      el.textContent = 'Fatal error: ' + msg;
-    } catch(_) {}
-  }
-
-  // Surface async errors too (useful on mobile where devtools is absent)
-  window.addEventListener('error', (ev) => {
-    try { showFatal(ev && ev.error ? ev.error : (ev && ev.message ? ev.message : 'Unknown error')); } catch(_) {}
-  });
-  window.addEventListener('unhandledrejection', (ev) => {
-    try { showFatal(ev && ev.reason ? ev.reason : 'Unhandled promise rejection'); } catch(_) {}
-  });
-
-  function initApp(){
-
     // -----------------------
     // Configuration
     // -----------------------
@@ -472,12 +379,10 @@
     const STICKER_H = 360;
 
 
-
-    const APP_VERSION = "2026-02-22.23";
     // Public "read more" link (update to your project page)
     const READ_MORE_URL = "https://github.com/eelkedevries/my-review-policy";
     const HEADER_H = 90;
-    const FOOTER_MIN_H = 70;
+    const FOOTER_H = 70;
 
     const COLORS = {
       bg: "#000000",
@@ -507,6 +412,7 @@
       showFooter: false,
       footerText: "",
       footerFontSize: 40,
+      imageSize: "standard",
       roundedCorners: true
     };
 
@@ -514,38 +420,7 @@
     // DOM
     // -----------------------
     const canvas = document.getElementById("c");
-    const ctx = canvas ? canvas.getContext("2d") : null;
-    // Offscreen canvas for robust "fit" checks (prevents font-size controls from exceeding available space)
-    const fitCanvas = document.createElement("canvas");
-    fitCanvas.width = STICKER_W;
-    fitCanvas.height = STICKER_H;
-    const fitCtx = fitCanvas.getContext("2d");
-
-    let currentMaxPolicyFontSize = 140;
-    let currentMaxHeaderFontSize = 140;
-
-
-
-// Lightbox DOM (optional; guarded to avoid breaking initial render)
-const lightbox = document.getElementById("lightbox");
-const lightboxBackdrop = document.getElementById("lightboxBackdrop");
-const lightboxClose = document.getElementById("lightboxClose");
-const lightboxImg = document.getElementById("lightboxImg");
-
-function openLightbox() {
-  if (!lightbox || !lightboxImg) return;
-  try { lightboxImg.src = canvas.toDataURL("image/png"); } catch (e) {}
-  lightbox.classList.add("open");
-  lightbox.setAttribute("aria-hidden", "false");
-  document.body.style.overflow = "hidden";
-}
-
-function closeLightbox() {
-  if (!lightbox) return;
-  lightbox.classList.remove("open");
-  lightbox.setAttribute("aria-hidden", "true");
-  document.body.style.overflow = "";
-}
+    const ctx = canvas.getContext("2d");
 
 
     const readMoreLink = document.getElementById("readMoreLink");
@@ -560,6 +435,7 @@ function closeLightbox() {
     const footerTextInput = document.getElementById("footerText");
 
     const roundedCorners = document.getElementById("roundedCorners");
+    const imageSizeSelect = document.getElementById("imageSize");
 
     const baseFontSizeInput = document.getElementById("baseFontSize");
     const headerFontSizeInput = document.getElementById("headerFontSize");
@@ -573,15 +449,61 @@ function closeLightbox() {
     const footerMinusBtn = document.getElementById("footerMinus");
 
     const overflowWarning = document.getElementById("overflowWarning");
-    const textSizeLimitMsg = document.getElementById("textSizeLimitMsg");
 
     const downloadBtn = document.getElementById("downloadBtn");
-    const exportStatus = document.getElementById("exportStatus");
     const copyBtn = document.getElementById("copyBtn");
     const copyLinkBtn = document.getElementById("copyLinkBtn");
     const clearBtn = document.getElementById("clearBtn");
 
+
+// Lightbox (in-page enlarged preview)
+const lightbox = document.getElementById("lightbox");
+const lightboxImg = document.getElementById("lightboxImg");
+const lightboxCloseBtn = document.getElementById("lightboxClose");
+
+function openLightbox() {
+  if (!lightbox || !lightboxImg) return;
+  lightboxImg.src = canvas.toDataURL("image/png");
+  lightbox.classList.add("open");
+  lightbox.setAttribute("aria-hidden", "false");
+  document.body.classList.add("modal-open");
+}
+
+function closeLightbox() {
+  if (!lightbox || !lightboxImg) return;
+  lightbox.classList.remove("open");
+  lightbox.setAttribute("aria-hidden", "true");
+  document.body.classList.remove("modal-open");
+  // Free up memory for large data URLs
+  lightboxImg.removeAttribute("src");
+}
+
+
+    
     // -----------------------
+    // Image size presets
+    // -----------------------
+    function getStickerDims() {
+      const preset = (imageSizeSelect && imageSizeSelect.value) || DEFAULT_STATE.imageSize || "standard";
+      if (preset === "linkedin") return { w: 1584, h: 396 };
+      return { w: STICKER_W, h: STICKER_H };
+    }
+
+    function updateFooterAvailabilityForSize() {
+      if (!imageSizeSelect) return;
+      const isLinkedIn = imageSizeSelect.value === "linkedin";
+
+      // LinkedIn banner should remain exactly 1584×396, so disable footer controls in this mode.
+      if (isLinkedIn) showFooter.checked = false;
+
+      const disable = isLinkedIn;
+      showFooter.disabled = disable;
+      footerTextInput.disabled = disable;
+      footerFontSizeInput.disabled = disable;
+      if (typeof footerPlusBtn !== "undefined" && footerPlusBtn) footerPlusBtn.disabled = disable;
+      if (typeof footerMinusBtn !== "undefined" && footerMinusBtn) footerMinusBtn.disabled = disable;
+    }
+// -----------------------
     // Helpers
     // -----------------------
     function clamp(n, a, b) { return Math.max(a, Math.min(b, n)); }
@@ -590,24 +512,855 @@ function closeLightbox() {
       return Number.isFinite(n) ? n : fallback;
     }
 
-    // Fast string hash for cache keys (FNV-1a, 32-bit)
-    function fnv1a(str) {
-      str = String(str ?? "");
-      let h = 2166136261;
-      for (let i = 0; i < str.length; i++) {
-        h ^= str.charCodeAt(i);
-        h = Math.imul(h, 16777619);
-      }
-      return h >>> 0;
+    
+    
+    function pathRoundRect(ctx, x, y, w, h, r) {
+      const radius = Math.max(0, Math.min(r, Math.min(w, h) / 2));
+      ctx.beginPath();
+      ctx.moveTo(x + radius, y);
+      ctx.arcTo(x + w, y, x + w, y + h, radius);
+      ctx.arcTo(x + w, y + h, x, y + h, radius);
+      ctx.arcTo(x, y + h, x, y, radius);
+      ctx.arcTo(x, y, x + w, y, radius);
+      ctx.closePath();
     }
 
-    // Cache max font sizes so we do not recompute expensive "fit" bounds on every render.
-    const _maxCache = {
-      policyKey: null,
-      policyVal: 140,
-      headerKey: null,
-      headerVal: 140
-    };
+    // Auto-fit text sizes until the user manually changes them
+    let policyAutoFit = true;
+    let headerAutoFit = true;
 
-    function hasInImageTitle() {
-      return !!(showHeader && showHeader.checked && headerTextInput && hea
+function getPolicyFontSize() { return clamp(parseIntOr(DEFAULT_STATE.policyFontSize, baseFontSizeInput.value), 10, 140); }
+    function setPolicyFontSize(n) { baseFontSizeInput.value = clamp(n, 10, 140); }
+
+    function getHeaderFontSize() { return clamp(parseIntOr(DEFAULT_STATE.headerFontSize, headerFontSizeInput.value), 10, 140); }
+    function setHeaderFontSize(n) { headerFontSizeInput.value = clamp(n, 10, 140); }
+
+    function getFooterFontSize() { return clamp(parseIntOr(DEFAULT_STATE.footerFontSize, footerFontSizeInput.value), 10, 140); }
+    function setFooterFontSize(n) { footerFontSizeInput.value = clamp(n, 10, 140); }
+
+    function bumpPolicy(delta) { policyAutoFit = false; setPolicyFontSize(getPolicyFontSize() + delta); renderAll(); }
+    function bumpHeader(delta) { headerAutoFit = false; setHeaderFontSize(getHeaderFontSize() + delta); renderAll(); }
+    function bumpFooter(delta) { setFooterFontSize(getFooterFontSize() + delta); renderAll(); }
+
+
+    function getSelectedPresetKey() {
+      const r = presetRadios.find(r => r.checked);
+      return r ? r.value : "";
+    }
+
+    function getCurrentState() {
+      return {
+        preset: getSelectedPresetKey(),
+        noText: noInput.value,
+        yesText: yesInput.value,
+        policyFontSize: getPolicyFontSize(),
+        showHeader: !!showHeader.checked,
+        headerText: headerTextInput.value,
+        headerFontSize: getHeaderFontSize(),
+        showFooter: !!showFooter.checked,
+        footerText: footerTextInput.value,
+        footerFontSize: getFooterFontSize(),
+        roundedCorners: !!roundedCorners.checked,
+        imageSize: (imageSizeSelect && imageSizeSelect.value) || DEFAULT_STATE.imageSize || "standard"
+      };
+    }
+
+    function applyState(s) {
+      if (!s || typeof s !== "object") return;
+
+      // Preset selection (cosmetic; text fields are authoritative)
+      if (typeof s.preset === "string" && s.preset.length) {
+        presetRadios.forEach(r => { r.checked = (r.value === s.preset); });
+      } else {
+        clearPresetSelection();
+      }
+
+      if (typeof s.noText === "string") noInput.value = s.noText;
+      if (typeof s.yesText === "string") yesInput.value = s.yesText;
+
+      if (typeof s.policyFontSize === "number") setPolicyFontSize(s.policyFontSize);
+      if (typeof s.headerFontSize === "number") setHeaderFontSize(s.headerFontSize);
+      if (typeof s.footerFontSize === "number") setFooterFontSize(s.footerFontSize);
+
+      if (typeof s.showHeader === "boolean") showHeader.checked = s.showHeader;
+      if (typeof s.headerText === "string") headerTextInput.value = s.headerText;
+
+      if (typeof s.showFooter === "boolean") showFooter.checked = s.showFooter;
+      if (typeof s.footerText === "string") footerTextInput.value = s.footerText;
+
+      if (typeof s.roundedCorners === "boolean" && roundedCorners) roundedCorners.checked = s.roundedCorners;
+
+            if (typeof s.imageSize === "string" && imageSizeSelect) imageSizeSelect.value = s.imageSize;
+      updateFooterAvailabilityForSize();
+
+      renderAll();
+    }
+
+    function stateToSearchParams(s) {
+      const sp = new URLSearchParams();
+      if (!s) return sp;
+
+      // Keep keys short for cleaner URLs
+      if (s.preset) sp.set("p", s.preset);
+      sp.set("no", s.noText || "");
+      sp.set("yes", s.yesText || "");
+      sp.set("pfs", String(s.policyFontSize || DEFAULT_STATE.policyFontSize));
+
+      sp.set("sh", s.showHeader ? "1" : "0");
+      sp.set("ht", s.headerText || "");
+      sp.set("hfs", String(s.headerFontSize || DEFAULT_STATE.headerFontSize));
+
+      sp.set("sf", s.showFooter ? "1" : "0");
+      sp.set("ft", s.footerText || "");
+      sp.set("ffs", String(s.footerFontSize || DEFAULT_STATE.footerFontSize));
+
+      sp.set("rc", s.roundedCorners ? "1" : "0");
+      sp.set("sz", s.imageSize || DEFAULT_STATE.imageSize || "standard");
+
+      return sp;
+    }
+
+    function parseStateFromQuery() {
+      const sp = new URLSearchParams(window.location.search);
+
+      // If none of our keys are present, treat as "no state".
+      const keys = ["p", "no", "yes", "pfs", "sh", "ht", "hfs", "sf", "ft", "ffs", "rc", "sz"];
+      const hasAny = keys.some(k => sp.has(k));
+      if (!hasAny) return null;
+
+      const s = {
+        preset: sp.get("p") || "",
+        noText: sp.get("no") ?? DEFAULT_STATE.noText,
+        yesText: sp.get("yes") ?? DEFAULT_STATE.yesText,
+        policyFontSize: parseIntOr(DEFAULT_STATE.policyFontSize, sp.get("pfs")),
+        showHeader: (sp.get("sh") ?? (DEFAULT_STATE.showHeader ? "1" : "0")) === "1",
+        headerText: sp.get("ht") ?? DEFAULT_STATE.headerText,
+        headerFontSize: parseIntOr(DEFAULT_STATE.headerFontSize, sp.get("hfs")),
+        showFooter: (sp.get("sf") ?? (DEFAULT_STATE.showFooter ? "1" : "0")) === "1",
+        footerText: sp.get("ft") ?? DEFAULT_STATE.footerText,
+        footerFontSize: parseIntOr(DEFAULT_STATE.footerFontSize, sp.get("ffs")),
+        roundedCorners: (sp.get("rc") ?? (DEFAULT_STATE.roundedCorners ? "1" : "0")) === "1",
+        imageSize: sp.get("sz") || DEFAULT_STATE.imageSize || "standard"
+      };
+
+      return s;
+    }
+
+    function applyStateFromQuery() {
+      const sp = new URLSearchParams(window.location.search);
+      const s = parseStateFromQuery();
+      if (s) {
+        // If the share link does not specify a font size, auto-fit it.
+        policyAutoFit = !sp.has("pfs");
+        headerAutoFit = !sp.has("hfs");
+        applyState(s);
+      }
+    }
+    // -----------------------
+    // Wrapping preserving spaces/newlines + breaking long words
+    // -----------------------
+    function splitPreserveNewlines(text) { return (text || "").split(/\r?\n/); }
+    function tokenizePreserveSpaces(s) { return (s || "").match(/(\s+|\S+)/g) || []; }
+
+    function breakTokenToFit(ctx, token, maxWidth) {
+      const parts = [];
+      let cur = "";
+      for (const ch of token) {
+        const test = cur + ch;
+        if (ctx.measureText(test).width <= maxWidth || cur.length === 0) cur = test;
+        else { parts.push(cur); cur = ch; }
+      }
+      if (cur) parts.push(cur);
+      return parts;
+    }
+
+    function wrapTextNoLimit(ctx, text, maxWidth, fontSize) {
+      ctx.font = `bold ${fontSize}px Arial`;
+      const paragraphs = splitPreserveNewlines(text);
+      const lines = [];
+
+      for (let pi = 0; pi < paragraphs.length; pi++) {
+        const para = paragraphs[pi];
+        const tokens = tokenizePreserveSpaces(para);
+
+        if (tokens.length === 0 && para.length === 0) { lines.push(""); continue; }
+
+        let line = "";
+
+        for (const tok of tokens) {
+          const isSpace = /^\s+$/.test(tok);
+          if (line.length === 0 && isSpace) continue;
+
+          if (!isSpace && ctx.measureText(tok).width > maxWidth) {
+            const pieces = breakTokenToFit(ctx, tok, maxWidth);
+            for (const piece of pieces) {
+              const test = line ? (line + piece) : piece;
+              if (ctx.measureText(test).width <= maxWidth || line.length === 0) line = test;
+              else { lines.push(line); line = piece; }
+            }
+            continue;
+          }
+
+          const test = line + tok;
+          if (ctx.measureText(test).width <= maxWidth || line.length === 0) line = test;
+          else { lines.push(line); line = isSpace ? "" : tok; }
+        }
+
+        if (line !== "") lines.push(line);
+      }
+
+      return lines;
+    }
+
+    // -----------------------
+    // Header text measurement (spaced lettering)
+    // -----------------------
+    function getTitleSpacingPx(sizePx) {
+      // Scale spacing with font size, with conservative bounds.
+      return Math.max(2, Math.min(14, Math.round(sizePx * 0.14)));
+    }
+
+    function measureSpacedText(ctx, text, spacingPx) {
+      const chars = Array.from(text || "");
+      if (chars.length === 0) return 0;
+      let w = 0;
+      for (let i = 0; i < chars.length; i++) {
+        w += ctx.measureText(chars[i]).width;
+        if (i < chars.length - 1) w += spacingPx;
+      }
+      return w;
+    }
+
+    function getTextHeightPx(ctx, text, fallbackSizePx) {
+      const m = ctx.measureText(text || "");
+      const ascent = (typeof m.actualBoundingBoxAscent === "number") ? m.actualBoundingBoxAscent : null;
+      const descent = (typeof m.actualBoundingBoxDescent === "number") ? m.actualBoundingBoxDescent : null;
+      if (ascent !== null && descent !== null) return ascent + descent;
+      return fallbackSizePx; // conservative fallback
+    }
+
+
+    // -----------------------
+    // Auto-fit policy text size
+    // -----------------------
+    function computeMaxPolicyFontSize() {
+      const dims = getStickerDims();
+      const W = dims.w;
+      const H = dims.h;
+
+      const sepW = Math.max(4, Math.round(W * 0.003));
+      const border = 0;
+
+      const padOuter = Math.round(W * 0.014);
+      const padSep = Math.round(W * 0.024);
+      const labelBlockW = Math.round(W * 0.16);
+
+      const innerH = H - 2 * border;
+      const totalInnerW = W - 2 * border;
+      const textAreaW = (totalInnerW - 2 * labelBlockW - sepW) / 2;
+
+      const noTextW = textAreaW - padOuter - padSep;
+      const yesTextW = textAreaW - padOuter - padSep;
+
+      const hasTitle = showHeader.checked && headerTextInput.value.trim().length > 0;
+
+      const clipTop = border + (hasTitle ? Math.round(H * 0.26) : Math.round(H * 0.12));
+      const clipBottom = border + innerH - Math.round(H * 0.08);
+      const clipH = Math.max(0, clipBottom - clipTop);
+
+      function fits(fontSize) {
+        const lineGap = Math.round(fontSize * 0.18);
+        const lh = fontSize + lineGap;
+        if (lh <= 0) return false;
+
+        const maxLines = Math.max(0, Math.floor(clipH / lh));
+
+        const noLines = wrapTextNoLimit(ctx, noInput.value, noTextW, fontSize);
+        const yesLines = wrapTextNoLimit(ctx, yesInput.value, yesTextW, fontSize);
+
+        if (noLines.length > maxLines || yesLines.length > maxLines) return false;
+
+        // Horizontal safety check (should already be satisfied by wrapping)
+        ctx.font = `bold ${fontSize}px Arial`;
+        for (const ln of noLines) if (ctx.measureText(ln).width > noTextW + 0.5) return false;
+        for (const ln of yesLines) if (ctx.measureText(ln).width > yesTextW + 0.5) return false;
+
+        return true;
+      }
+
+      // Find the largest font size that allows BOTH sides to fit.
+      for (let fs = 140; fs >= 10; fs--) {
+        if (fits(fs)) return fs;
+      }
+      return 10;
+    }
+
+    function computeMaxHeaderFontSize() {
+      // Header is rendered inside the central black area at the top.
+      const hasTitle = showHeader.checked && headerTextInput.value.trim().length > 0;
+      if (!hasTitle) return 140;
+
+      const title = headerTextInput.value.trim();
+      const dims = getStickerDims();
+      const W = dims.w;
+      const H = dims.h;
+
+      const sepW = Math.max(4, Math.round(W * 0.003));
+      const border = 0;
+      const labelBlockW = Math.round(W * 0.16);
+      const innerH = H - 2 * border;
+
+      // With a title, separator starts lower, leaving a title area at the top.
+      const sepTopPad = Math.round(H * 0.20);
+      const sepBottomPad = Math.round(H * 0.10);
+      const sepY = border + sepTopPad;
+      const sepH = innerH - sepTopPad - sepBottomPad;
+      void sepH; // silence lint (kept for conceptual symmetry)
+
+      const titleAreaX = border + labelBlockW;
+      const titleAreaW = W - 2 * labelBlockW;
+      const titleAreaY = border;
+      const titleAreaH = Math.max(0, sepY - border);
+      void titleAreaX; void titleAreaY;
+
+      // Safety margins inside the clipped title area.
+      const maxW = titleAreaW * 0.94;
+      const maxH = titleAreaH * 0.90;
+
+      function fits(fs) {
+        if (fs < 10) return false;
+        ctx.font = `600 ${fs}px Arial`;
+        const spacingPx = getTitleSpacingPx(fs);
+        const w = measureSpacedText(ctx, title, spacingPx);
+        if (w > maxW) return false;
+        const h = getTextHeightPx(ctx, title, fs);
+        if (h > maxH) return false;
+        return true;
+      }
+
+      // Binary search for the maximum fitting size.
+      let lo = 10, hi = 140;
+      while (lo < hi) {
+        const mid = Math.ceil((lo + hi) / 2);
+        if (fits(mid)) lo = mid;
+        else hi = mid - 1;
+      }
+      return clamp(lo, 10, 140);
+    }
+
+    function drawTextBlockClipped(opts) {
+      const { ctx, text, x, y, w, h, fontSize, lineGap, align, fillStyle } = opts;
+      const clipY = y;
+      const drawY = (typeof opts.drawY === "number") ? opts.drawY : y;
+
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(x, clipY, w, h);
+      ctx.clip();
+
+      ctx.font = `bold ${fontSize}px Arial`;
+      ctx.fillStyle = fillStyle;
+      ctx.textBaseline = "top";
+      ctx.textAlign = align;
+
+      const maxWidth = w;
+      const lines = wrapTextNoLimit(ctx, text, maxWidth, fontSize);
+
+      const lh = fontSize + lineGap;
+      const availableH = Math.max(0, (clipY + h) - drawY);
+      const maxLinesThatFit = Math.max(0, Math.floor(availableH / lh));
+      const willOverflowVert = lines.length > maxLinesThatFit;
+
+      let cy = drawY;
+      for (let i = 0; i < Math.min(lines.length, maxLinesThatFit); i++) {
+        const line = lines[i];
+        let tx = x;
+        if (align === "right") tx = x + w;
+        if (align === "center") tx = x + w / 2;
+        ctx.fillText(line, tx, cy);
+        cy += lh;
+      }
+
+      ctx.restore();
+
+      ctx.font = `bold ${fontSize}px Arial`;
+      let willOverflowHoriz = false;
+      for (const ln of lines) {
+        if (ctx.measureText(ln).width > maxWidth + 0.5) { willOverflowHoriz = true; break; }
+      }
+
+      return { overflow: willOverflowVert || willOverflowHoriz };
+    }
+
+    function fitLabelFontSize(ctx, labelBlockW, innerH) {
+      const maxW = labelBlockW * 0.86;
+      const maxH = innerH * 0.80;
+      let size = Math.floor(innerH * 0.62);
+
+      while (size > 20) {
+        ctx.font = `bold ${size}px Arial`;
+        const yesW = ctx.measureText("YES").width;
+        const noW  = ctx.measureText("NO").width;
+        if (yesW <= maxW && noW <= maxW && size <= maxH) return size;
+        size -= 2;
+      }
+      return 20;
+    }
+
+    // -----------------------
+    // Drawing
+    // -----------------------
+    function drawHeaderBand(ctx, W, headerH, text, fontSizeFixed) {
+      ctx.fillStyle = COLORS.headerBg;
+      ctx.fillRect(0, 0, W, headerH);
+
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(0, 0, W, headerH);
+      ctx.clip();
+
+      ctx.font = `bold ${fontSizeFixed}px Arial`;
+      ctx.fillStyle = COLORS.headerText;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(text, W / 2, headerH / 2);
+
+      const overflow = ctx.measureText(text).width > W * 0.92;
+
+      ctx.restore();
+      return { overflow };
+    }
+
+    function drawFooterBand(ctx, W, footerH, yOffset, text, fontSizeFixed) {
+      ctx.fillStyle = COLORS.footerBg;
+      ctx.fillRect(0, yOffset, W, footerH);
+
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(0, yOffset, W, footerH);
+      ctx.clip();
+
+      ctx.font = `bold ${fontSizeFixed}px Arial`;
+      ctx.fillStyle = COLORS.footerText;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(text, W / 2, yOffset + footerH / 2);
+
+      const overflow = ctx.measureText(text).width > W * 0.92;
+
+      ctx.restore();
+      return { overflow };
+    }
+
+    function drawSticker(ctx, W, H, policyFontSize) {
+      // Center separator: thinner and less dominant
+      const sepW = Math.max(4, Math.round(W * 0.003));
+
+
+      // No outer outline/border now
+      const border = 0;
+
+      const padOuter = Math.round(W * 0.014);
+      const padSep = Math.round(W * 0.024);
+      const labelBlockW = Math.round(W * 0.16);
+      const innerH = H - 2 * border;
+      const totalInnerW = W - 2 * border;
+      const textAreaW = (totalInnerW - 2 * labelBlockW - sepW) / 2;
+
+      const xNoBlock = border;
+      const xNoText = border + labelBlockW;
+      const xSep = xNoText + textAreaW;
+      const xYesText = xSep + sepW;
+      const xYesBlock = xYesText + textAreaW;
+
+      // Background
+      ctx.fillStyle = COLORS.bg;
+      ctx.fillRect(0, 0, W, H);
+
+      // Separator (shorter height, not full)
+      const hasTitle = showHeader.checked && headerTextInput.value.trim().length > 0;
+      const sepTopPad = hasTitle ? Math.round(H * 0.20) : Math.round(H * 0.08);
+      const sepBottomPad = Math.round(H * 0.10);
+      const sepY = border + sepTopPad;
+      const sepH = innerH - sepTopPad - sepBottomPad;
+
+      ctx.fillStyle = COLORS.sep;
+      ctx.fillRect(xSep, sepY, sepW, sepH);
+
+      // Blocks
+      ctx.fillStyle = COLORS.no;
+      ctx.fillRect(xNoBlock, border, labelBlockW, innerH);
+
+      ctx.fillStyle = COLORS.yes;
+      ctx.fillRect(xYesBlock, border, labelBlockW, innerH);
+
+      // YES/NO labels
+      ctx.fillStyle = COLORS.text;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      const labelFontSize = fitLabelFontSize(ctx, labelBlockW, innerH);
+      ctx.font = `bold ${labelFontSize}px Arial`;
+      ctx.fillText("NO", xNoBlock + labelBlockW / 2, H / 2);
+      ctx.fillText("YES", xYesBlock + labelBlockW / 2, H / 2);
+
+      // In-image title (drawn in the central black area, above the policy text)
+      let titleOverflow = false;
+      if (hasTitle) {
+        const title = headerTextInput.value.trim();
+
+        // Clip to the central black area so it never spills into the NO/YES colour blocks
+        const titleAreaX = xNoText;
+        const titleAreaW = W - 2 * labelBlockW;
+        const titleAreaY = border;
+        const titleAreaH = Math.max(0, sepY - border);
+
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(titleAreaX, titleAreaY, titleAreaW, titleAreaH);
+        ctx.clip();
+
+        // Letter spacing for a cleaner "label" look (canvas has no native letter-spacing)
+        function drawCenteredSpacedText(ctx, text, cx, cy, spacingPx) {
+          const prevAlign = ctx.textAlign;
+          ctx.textAlign = "left";
+          const chars = Array.from(text);
+          if (chars.length === 0) { ctx.textAlign = prevAlign; return; }
+          const widths = chars.map(ch => ctx.measureText(ch).width);
+          const totalW = widths.reduce((a,b)=>a+b,0) + spacingPx * (chars.length - 1);
+          let x = cx - totalW / 2;
+          for (let i = 0; i < chars.length; i++) {
+            ctx.fillText(chars[i], x, cy);
+            x += widths[i] + spacingPx;
+          }
+          ctx.textAlign = prevAlign;
+        }
+
+        const titleSize = getHeaderFontSize();
+        ctx.font = `600 ${titleSize}px Arial`;
+        const titleSpacingPx = getTitleSpacingPx(titleSize);
+        const tooWide = measureSpacedText(ctx, title, titleSpacingPx) > titleAreaW * 0.94;
+        const tooTall = getTextHeightPx(ctx, title, titleSize) > (titleAreaH * 0.90);
+        titleOverflow = tooWide || tooTall;
+
+        ctx.fillStyle = COLORS.titleText;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        drawCenteredSpacedText(ctx, title, titleAreaX + titleAreaW / 2, titleAreaY + titleAreaH / 2, titleSpacingPx);
+
+        ctx.restore();
+      }
+
+
+      // Text areas (clipped, no shrink)
+      // Vertically centre each text block so it aligns with the NO/YES labels.
+      const lineGap = Math.round(policyFontSize * 0.18);
+      const lh = policyFontSize + lineGap;
+
+      // Safe clip region: keep text below the in-image title and away from the bottom edge.
+      const clipTop = border + (hasTitle ? Math.round(H * 0.26) : Math.round(H * 0.12));
+      const clipBottom = border + innerH - Math.round(H * 0.08);
+      const clipH = Math.max(0, clipBottom - clipTop);
+
+      // Target vertical centre (same as YES/NO labels).
+      const yMid = border + innerH / 2;
+
+      // Padding: more space around the centre divider
+      const noTextX = xNoText + padOuter;
+      const noTextW = textAreaW - padOuter - padSep;
+      const yesTextX = xYesText + padSep;
+      const yesTextW = textAreaW - padOuter - padSep;
+
+      function computeDrawY(text, width) {
+        const lines = wrapTextNoLimit(ctx, text, width, policyFontSize);
+        const maxLines = Math.max(0, Math.floor(clipH / lh));
+        const visibleLines = Math.min(lines.length, maxLines);
+        const visibleH = visibleLines * lh;
+        let y = yMid - (visibleH / 2);
+        y = Math.max(clipTop, Math.min(y, clipBottom - visibleH));
+        return y;
+      }
+
+      const noDrawY = computeDrawY(noInput.value, noTextW);
+      const yesDrawY = computeDrawY(yesInput.value, yesTextW);
+
+      const noOverflow = drawTextBlockClipped({
+        ctx,
+        text: noInput.value,
+        x: noTextX,
+        y: clipTop,
+        w: noTextW,
+        h: clipH,
+        drawY: noDrawY,
+        fontSize: policyFontSize,
+        lineGap,
+        align: "left",
+        fillStyle: COLORS.text
+      }).overflow;
+
+      const yesOverflow = drawTextBlockClipped({
+        ctx,
+        text: yesInput.value,
+        x: yesTextX,
+        y: clipTop,
+        w: yesTextW,
+        h: clipH,
+        drawY: yesDrawY,
+        fontSize: policyFontSize,
+        lineGap,
+        align: "right",
+        fillStyle: COLORS.text
+      }).overflow;
+
+return { overflow: (noOverflow || yesOverflow || titleOverflow) };
+    }
+
+    function setCanvasSizeAndRender() {
+      const hasFooter = showFooter.checked;
+
+      // The header text is rendered inside the main image (sticker), so we do not add an extra header band height.
+      const dims = getStickerDims();
+      const totalH = dims.h + (hasFooter ? FOOTER_H : 0);
+      canvas.width = dims.w;
+      canvas.height = totalH;
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      const useRounded = !!(roundedCorners && roundedCorners.checked);
+      canvas.classList.toggle("rc-on", useRounded);
+      const cornerR = Math.max(16, Math.min(42, Math.round(Math.min(canvas.width, canvas.height) * 0.06)));
+      if (useRounded) {
+        ctx.save();
+        pathRoundRect(ctx, 0, 0, canvas.width, canvas.height, cornerR);
+        ctx.clip();
+      }
+
+      let overflow = false;
+
+      const dims2 = getStickerDims();
+      const stickerOverflow = drawSticker(ctx, dims2.w, dims2.h, getPolicyFontSize());
+      overflow = overflow || stickerOverflow.overflow;
+
+      if (hasFooter) {
+        const dims3 = getStickerDims();
+      const footerOverflow = drawFooterBand(ctx, dims3.w, FOOTER_H, dims3.h, footerTextInput.value, getFooterFontSize());
+        overflow = overflow || footerOverflow.overflow;
+      }
+
+      if (useRounded) ctx.restore();
+
+      overflowWarning.style.display = overflow ? "block" : "none";
+    }
+
+    // -----------------------
+    // Defaults
+    // -----------------------
+    function clearPresetSelection() { presetRadios.forEach(r => r.checked = false); }
+
+    function applyPresetKey(key) {
+      const p = PRESETS[key];
+      if (!p) return;
+      noInput.value = p.no;
+      yesInput.value = p.yes;
+    }
+
+    
+    function setDefaults() {
+      policyAutoFit = true;
+      headerAutoFit = true;
+
+      clearPresetSelection();
+      noInput.value = DEFAULT_STATE.noText;
+      yesInput.value = DEFAULT_STATE.yesText;
+
+      showHeader.checked = DEFAULT_STATE.showHeader;
+      headerTextInput.value = DEFAULT_STATE.headerText;
+      setHeaderFontSize(DEFAULT_STATE.headerFontSize);
+
+      showFooter.checked = DEFAULT_STATE.showFooter;
+      footerTextInput.value = DEFAULT_STATE.footerText;
+      setFooterFontSize(DEFAULT_STATE.footerFontSize);
+
+
+      if (roundedCorners) roundedCorners.checked = DEFAULT_STATE.roundedCorners;
+
+      if (imageSizeSelect) imageSizeSelect.value = DEFAULT_STATE.imageSize || "standard";
+      updateFooterAvailabilityForSize();
+
+      // Default behaviour: set sizes to 99% of the maximum that fits (Policy) and 50% for the Header (until the user overrides them).
+      const maxPolicy = computeMaxPolicyFontSize();
+      setPolicyFontSize(Math.max(10, Math.floor(maxPolicy * 0.99)));
+
+      const hasTitle = showHeader.checked && headerTextInput.value.trim().length > 0;
+      if (hasTitle) {
+        const maxHeader = computeMaxHeaderFontSize();
+        setHeaderFontSize(Math.max(10, Math.floor(maxHeader * 0.50)));
+      }
+
+      setCanvasSizeAndRender();
+    }
+
+    function renderAll() {
+      // Policy: auto-fit (99% of max) or cap at max if user-selected size is too large.
+      const maxPolicy = computeMaxPolicyFontSize();
+      if (policyAutoFit) {
+        setPolicyFontSize(Math.max(10, Math.floor(maxPolicy * 0.99)));
+      } else {
+        const cur = getPolicyFontSize();
+        if (cur > maxPolicy) setPolicyFontSize(maxPolicy);
+      }
+
+      // Header: only meaningful when the title is actually rendered.
+      const hasTitle = showHeader.checked && headerTextInput.value.trim().length > 0;
+      if (hasTitle) {
+        const maxHeader = computeMaxHeaderFontSize();
+        if (headerAutoFit) {
+          setHeaderFontSize(Math.max(10, Math.floor(maxHeader * 0.50)));
+        } else {
+          const curH = getHeaderFontSize();
+          if (curH > maxHeader) setHeaderFontSize(maxHeader);
+        }
+      }
+
+      setCanvasSizeAndRender();
+    }
+
+    // -----------------------
+    // Export / clipboard
+    // -----------------------
+    function downloadPNG() {
+      const a = document.createElement("a");
+      a.download = "my-review-policy.png";
+      a.href = canvas.toDataURL("image/png");
+      a.click();
+    }
+
+    async function copyImage() {
+      try {
+        if (!navigator.clipboard || !window.ClipboardItem) {
+          alert("Clipboard image copy is not supported in this browser.");
+          return;
+        }
+        const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/png"));
+        if (!blob) { alert("Could not create image blob."); return; }
+        await navigator.clipboard.write([new ClipboardItem({ "image/png": blob })]);
+        alert("Image copied to clipboard.");
+      } catch (e) {
+        console.error(e);
+        alert("Copy failed.");
+      }
+    }
+
+    async function copyLinkRobust() {
+      const base = (window.location.origin && window.location.origin !== "null")
+        ? (window.location.origin + window.location.pathname)
+        : window.location.href.split("?")[0].split("#")[0];
+
+      const sp = stateToSearchParams(getCurrentState());
+      const qs = sp.toString();
+      const url = qs ? (base + "?" + qs) : base;
+try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(url);
+          alert("Link copied to clipboard.");
+          return;
+        }
+      } catch (e) {}
+
+      try {
+        const tmp = document.createElement("textarea");
+        tmp.value = url;
+        tmp.setAttribute("readonly", "");
+        tmp.style.position = "fixed";
+        tmp.style.left = "-9999px";
+        tmp.style.top = "0";
+        document.body.appendChild(tmp);
+        tmp.select();
+        tmp.setSelectionRange(0, tmp.value.length);
+        const ok = document.execCommand("copy");
+        document.body.removeChild(tmp);
+        if (ok) alert("Link copied to clipboard.");
+        else alert("Copy failed. Please copy from the address bar.");
+      } catch (e) {
+        alert("Copy failed. Please copy from the address bar.");
+      }
+    }
+
+    // -----------------------
+    // Events
+    // -----------------------
+    function onAnyChange() { renderAll(); }
+
+    presetRadios.forEach(radio => {
+      radio.addEventListener("change", () => { applyPresetKey(radio.value); onAnyChange(); });
+    });
+
+    noInput.addEventListener("input", onAnyChange);
+    yesInput.addEventListener("input", onAnyChange);
+
+    showHeader.addEventListener("change", onAnyChange);
+    headerTextInput.addEventListener("input", onAnyChange);
+
+    showFooter.addEventListener("change", onAnyChange);
+    footerTextInput.addEventListener("input", onAnyChange);
+
+    if (roundedCorners) roundedCorners.addEventListener("change", onAnyChange);
+
+
+if (canvas) canvas.addEventListener("click", openLightbox);
+
+if (lightbox) {
+  lightbox.addEventListener("click", (e) => {
+    // Close only when clicking the backdrop (not the image/inner UI)
+    if (e.target === lightbox) closeLightbox();
+  });
+}
+if (lightboxCloseBtn) lightboxCloseBtn.addEventListener("click", closeLightbox);
+
+window.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && lightbox && lightbox.classList.contains("open")) closeLightbox();
+});
+
+
+    if (imageSizeSelect) {
+      imageSizeSelect.addEventListener("change", () => {
+        updateFooterAvailabilityForSize();
+        // Resizing affects what "fits", so keep auto-fit behaviour unless user already overrode it.
+        renderAll();
+      });
+    }
+
+    baseFontSizeInput.addEventListener("input", () => { policyAutoFit = false; setPolicyFontSize(getPolicyFontSize()); onAnyChange(); });
+    headerFontSizeInput.addEventListener("input", () => { headerAutoFit = false; setHeaderFontSize(getHeaderFontSize()); onAnyChange(); });
+    footerFontSizeInput.addEventListener("input", () => { setFooterFontSize(getFooterFontSize()); onAnyChange(); });
+
+    fontPlusBtn.addEventListener("click", () => bumpPolicy(+2));
+    fontMinusBtn.addEventListener("click", () => bumpPolicy(-2));
+
+    headerPlusBtn.addEventListener("click", () => bumpHeader(+2));
+    headerMinusBtn.addEventListener("click", () => bumpHeader(-2));
+
+    footerPlusBtn.addEventListener("click", () => bumpFooter(+2));
+    footerMinusBtn.addEventListener("click", () => bumpFooter(-2));
+
+    downloadBtn.addEventListener("click", downloadPNG);
+    copyBtn.addEventListener("click", copyImage);
+    copyLinkBtn.addEventListener("click", copyLinkRobust);
+    clearBtn.addEventListener("click", setDefaults);
+
+    window.addEventListener("resize", setCanvasSizeAndRender);
+
+    // Init: always reset to defaults on reload
+    setDefaults();
+
+    // Wire the "read more" link for GitHub Pages
+    if (readMoreLink) {
+      readMoreLink.href = READ_MORE_URL;
+      readMoreLink.textContent = READ_MORE_URL;
+    }
+
+    // If the page was opened with a share link, apply it on top of defaults
+    applyStateFromQuery();
+    updateFooterAvailabilityForSize();
+  </script>
+</body>
+</html>
