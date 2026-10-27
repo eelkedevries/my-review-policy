@@ -516,9 +516,8 @@
       <h1 class="intro-heading">My review policy</h1>
 
       <p class="subtext">
-      This YES/NO image generator helps researchers share their personal review policy in any way they want (for example, a social media post or a quick reply to unwanted review requests), including automated mass invitations, predatory journals, and high-fee for-profit publishers that rely on unpaid reviewing and often place accepted papers behind paywalls.
-      <strong>#MyReviewPolicy</strong>
-      &nbsp;Read more here: <a href="https://eelkedevries.com/projects.html" id="readMoreLink">https://eelkedevries.com/projects.html</a>
+      For people trained to question everything, scientists are remarkably good at accepting nonsense. They review papers for free, then watch some publishers charge authors up to €10,000 and readers again through subscriptions. Below is the cure for academic publishing. It is an image with two columns.
+      <br>Why this exists: <a href="https://eelkedevries.com/blog/why-i-wrote-my-own-peer-review-policy/" id="readMoreLink">blog post</a>
       <span class="iconbar" aria-label="Links">
         <a class="iconlink" href="https://www.linkedin.com/in/eelkedevries" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
           <svg viewBox="0 0 24 24" role="img" aria-hidden="true">
@@ -658,8 +657,8 @@
     const STICKER_H = 360;
 
 
-    // Public "read more" link (update to your project page)
-    const READ_MORE_URL = "https://eelkedevries.com/projects.html";
+    // Public "read more" link (blog post explaining the policy)
+    const READ_MORE_URL = "https://eelkedevries.com/blog/why-i-wrote-my-own-peer-review-policy/";
     const HEADER_H = 90;
     const FOOTER_H = 70;
 
@@ -1631,10 +1630,9 @@ window.addEventListener("keydown", (e) => {
     // Init: always reset to defaults on reload
     setDefaults();
 
-    // Wire the "read more" link to the projects page on the main site
+    // Wire the "read more" link; the visible label stays as written in the HTML
     if (readMoreLink) {
       readMoreLink.href = READ_MORE_URL;
-      readMoreLink.textContent = READ_MORE_URL;
     }
 
     // If the page was opened with a share link, apply it on top of defaults
